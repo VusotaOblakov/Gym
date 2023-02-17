@@ -1,0 +1,70 @@
+﻿@model List<WebApplication2.Models.Region>
+
+@{
+}
+
+<select id="regionSelect" onchange="loadCities()">
+    @foreach (var region in Model)
+    {
+        <option value="@region.id">@region.name</option>
+    }
+</select>
+<select id="citySelect" onchange="loadGyms()">
+    <option value="">Select a city</option>
+</select>
+<table class="table">
+    <thead>
+        <tr>
+            <th>GymId</th>
+            <th>GymName</th>
+            <th>GymDesc</th>
+            <th>GymAddress</th>
+        </tr>
+    </thead>
+    <tbody id="gyms">
+
+    </tbody>
+</table>
+<script>
+function loadCities() {
+    var regionId = $('#regionSelect').val();
+    $.ajax({
+        type: "GET",
+        url: "/City/GetCitiesByRegion",
+        data: { region_id: regionId },
+        success: function (result) {
+            $('#citySelect').empty();
+            $.each(result, function (i, city) {
+                $('#citySelect').append($('<option>', {
+                    value: city.id,
+                    text: city.name
+                }));
+            });
+        }
+    });
+}
+
+function loadGyms() {
+    var cityId = $('#citySelect').val();
+    
+    $.ajax({
+        type: "GET",
+        url: "/Gym/Index",
+        data: { id: cityId },
+        success: function (result) {
+            $('#gyms').empty();
+            $.each(result, function (i, gym) {
+                var html = '<tr>';
+                html += '<td>' + gym.id + '</td>';
+                html += '<td>' + gym.name + '</td>';
+                html += '<td>' + gym.description + '</td>';
+                html += '<td>' + gym.adress + '</td>';
+                html += '</tr>';
+                $('#gyms').append(html);
+            });
+        }
+    });
+}
+
+
+</script>

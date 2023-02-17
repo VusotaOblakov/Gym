@@ -1,0 +1,30 @@
+﻿@model List<WebApplication2.Models.Gym>
+
+@{
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>GymId</th>
+            <th>GymName</th>
+            <th>GymDesc</th>
+            <th>GymAddress</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var gym in Model)
+        {
+       <tr>
+            <th>@gym.id</th>
+            <th>@gym.name</th>
+            <th>@gym.description</th>
+            <th>@gym.adress</th>
+        </tr>    
+        }
+    </tbody>
+</table>
+
+<script>
+
+</script>
