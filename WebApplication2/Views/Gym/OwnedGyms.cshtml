@@ -1,0 +1,34 @@
+﻿
+@model List<WebApplication2.Models.Gym>
+
+    <p>
+        <a asp-action="AddGym">Add Gym</a>
+    </p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>GymId</th>
+            <th>GymName</th>
+            <th>GymDesc</th>
+            <th>GymAddress</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var gym in Model)
+        {
+       <tr>
+            <th>@gym.id</th>
+            <th>@gym.name</th>
+            <th>@gym.description</th>
+            <th>@gym.adress</th>
+            <td>
+                <a asp-controller="Gym" asp-action="EditGym" asp-route-id="@gym.id">Edit</a> |
+                <a asp-controller="Gym" asp-action="DeleteGym" asp-route-id="@gym.id">Delete</a>
+            </td>
+        </tr>    
+        }
+    </tbody>
+</table>

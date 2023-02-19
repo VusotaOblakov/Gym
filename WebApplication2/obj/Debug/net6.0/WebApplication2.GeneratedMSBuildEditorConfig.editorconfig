@@ -15,6 +15,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\ОЛЕГ Учеба\Наработки\c#\WebApplication2\WebApplication2
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -47,8 +51,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Gym/AddGym.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3ltXEFkZEd5bS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Gym/AllGyms.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3ltXEFsbEd5bXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Gym/EditGym.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3ltXEVkaXRHeW0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Gym/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3ltXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Gym/OwnedGyms.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3ltXE93bmVkR3ltcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Home/Index.cshtml]

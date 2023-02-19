@@ -8,7 +8,10 @@
 <p>Hello, @Model.Name!</p>
 
 <p>Your role is: @Model.Role</p>
+<ul>
+    <li><a asp-controller="Gym" asp-action="OwnedGyms">OwnedGyms</a></li>
 
+</ul>
 <form asp-controller="Account" asp-action="Logout" method="post">
     <button type="submit" class="btn btn-primary">Logout</button>
 </form>

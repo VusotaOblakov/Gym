@@ -1,0 +1,46 @@
+﻿@model List<WebApplication2.Models.Gym>
+
+@{
+}
+@if(TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+@if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin") )
+{
+    <p>
+        <a asp-action="AddGym">Add Gym</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>GymId</th>
+            <th>GymName</th>
+            <th>GymDesc</th>
+            <th>GymAddress</th>
+            <th>Owner</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var gym in Model)
+        {
+            <tr>
+                <td>@gym.id</td>
+                <td>@gym.name</td>
+                <td>@gym.description</td>
+                <td>@gym.adress</td>
+                <td>@gym.owner_id</td>
+                <td>
+                    <a asp-action="EditGym" asp-route-id="@gym.id">Edit</a> |
+                    <a asp-action="DeleteGym" asp-route-id="@gym.id">Delete</a>
+                </td>
+            </tr>    
+        }
+    </tbody>
+</table>
+
+<script>
+
+</script>

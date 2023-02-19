@@ -21,8 +21,11 @@ namespace WebApplication2.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
+
+
         public IActionResult EditRoles()
         {
             var roles = _roleManager.Roles.ToList();
@@ -159,6 +162,24 @@ namespace WebApplication2.Controllers
             }
 
             return RedirectToAction("AllUsers");
+        }
+
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound($"user '{user}' not found.");
+            }
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(AllUsers));
+            }
+
+            return RedirectToAction(nameof(AllUsers));
         }
 
     }
