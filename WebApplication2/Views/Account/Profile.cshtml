@@ -1,0 +1,14 @@
+﻿@model WebApplication2.Models.ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Hello, @Model.Name!</p>
+
+<p>Your role is: @Model.Role</p>
+
+<form asp-controller="Account" asp-action="Logout" method="post">
+    <button type="submit" class="btn btn-primary">Logout</button>
+</form>

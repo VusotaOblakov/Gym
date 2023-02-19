@@ -15,6 +15,38 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\ОЛЕГ Учеба\Наработки\c#\WebApplication2\WebApplication2
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Account/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Account/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Admin/AllUsers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWxsVXNlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Admin/EditRoles.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFJvbGVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Admin/EditUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFVzZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Gym/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3ltXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

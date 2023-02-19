@@ -1,0 +1,40 @@
+﻿@model WebApplication2.Models.EditRolesViewModel
+
+<h2>Edit Roles</h2>
+
+<div class="row">
+    <div class="col-md-6">
+<form method="post" asp-action="AddRole">
+    <div class="form-group">
+        <label for="roleName">Role Name:</label>
+        <input type="text" class="form-control" id="roleName" name="roleName">
+        <span asp-validation-for="RoleName" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Role</button>
+</form>
+    </div>
+    <div class="col-md-6">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Role Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+               @foreach (var role in Model.Roles)
+{
+    <tr>
+        <td>@role.Name</td>
+        <td>
+            <form asp-action="DeleteRole" method="post">
+                <input type="hidden" name="roleName" value="@role.Name" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </td>
+    </tr>
+}
+            </tbody>
+        </table>
+    </div>
+</div>
