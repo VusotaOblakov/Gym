@@ -1,0 +1,37 @@
+﻿@model WebApplication2.Models.BookGymViewModel
+
+
+
+<h1>Book Gym: @Model.GymName</h1>
+
+<p>Select a date:</p>
+<form asp-controller="Gym" asp-action="BookGym" method="get">
+    <div class="form-group">
+        <input type="date" name="selectedDate" value="@Model.SelectedDate.ToString("yyyy-MM-dd")" />
+        <button type="submit" class="btn btn-primary">Select Date</button>
+        <input type="hidden" name="gymId" value="@Model.GymId" />
+    </div>
+</form>
+
+@if (Model.AvailableHours != null && Model.AvailableHours.Any())
+{
+    <p>Select available hour(s) for @Model.SelectedDate:</p>
+    <form asp-controller="Gym" asp-action="BookGym" method="post">
+        <input type="hidden" name="gymId" value="@Model.GymId" />
+        <input type="hidden" name="bookingDate" value="@Model.SelectedDate.ToString("yyyy-MM-dd")" />
+
+        @foreach (var hour in Model.AvailableHours)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="selectedHour" value="@hour" />
+                <label class="form-check-label">@hour:00 - @(hour + 1):00</label>
+            </div>
+        }
+
+        <button type="submit" class="btn btn-primary">Book</button>
+    </form>
+}
+else if (Model.SelectedDate != null)
+{
+    <p>No available hours found for @Model.SelectedDate. Please select another date.</p>
+}

@@ -39,8 +39,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWxsVXNlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Admin/EditAccessory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdEFjY2Vzc29yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Admin/EditRoles.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFJvbGVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Admin/EditSport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFNwb3J0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Admin/EditUser.cshtml]
@@ -59,12 +67,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3ltXEFsbEd5bXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Gym/BookGym.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3ltXEJvb2tHeW0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Gym/EditGym.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3ltXEVkaXRHeW0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Gym/GymDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3ltXEd5bURldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Gym/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3ltXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Gym/OrderedGyms.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3ltXE9yZGVyZWRHeW1zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/ОЛЕГ Учеба/Наработки/c\#/WebApplication2/WebApplication2/Views/Gym/OwnedGyms.cshtml]

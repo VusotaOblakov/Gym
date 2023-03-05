@@ -2,11 +2,8 @@
 
 @{
 }
-@if(TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-}
-@if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin") )
+
+@if (User.IsInRole("SuperAdmin"))
 {
     <p>
         <a asp-action="AddGym">Add Gym</a>
@@ -20,6 +17,7 @@
             <th>GymDesc</th>
             <th>GymAddress</th>
             <th>Owner</th>
+            <th>Price</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -32,9 +30,11 @@
                 <td>@gym.description</td>
                 <td>@gym.adress</td>
                 <td>@gym.owner_id</td>
+                <td>@gym.price</td>
                 <td>
                     <a asp-action="EditGym" asp-route-id="@gym.id">Edit</a> |
                     <a asp-action="DeleteGym" asp-route-id="@gym.id">Delete</a>
+                    <a asp-action="GymDetails" asp-route-id="@gym.id">View</a>
                 </td>
             </tr>    
         }

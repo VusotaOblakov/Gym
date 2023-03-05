@@ -2,14 +2,9 @@
 {
     public class EditGym
     {
-        public int  id  { get; set; }
-        public string name { get; set; }
-
-        public string description { get; set; }
-
-        public string adress { get; set; }
-
-
+        public Gym gym { get; set; }
+        public List<GymAccessoryView> Accessories { get; set; }
+        public List<GymSportView> Sports { get; set; }
     }
 
 

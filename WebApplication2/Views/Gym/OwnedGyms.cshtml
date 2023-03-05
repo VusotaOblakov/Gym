@@ -5,7 +5,10 @@
         <a asp-action="AddGym">Add Gym</a>
     </p>
 
-
+@if(TempData["GoodMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["GoodMessage"]</div>
+}
 <table class="table">
     <thead>
         <tr>

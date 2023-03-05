@@ -1,0 +1,43 @@
+﻿@model WebApplication2.Models.SportView
+
+<h2>Edit Sports</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Existing Sports</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var sport in Model.Sports)
+                {
+                    <tr>
+                        <td>@sport.name</td>
+                        <td>
+                            <form method="post" asp-action="DeleteSport">
+                                <input type="hidden" name="sportId" value="@sport.id" />
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h3>Add New Sport</h3>
+
+        <form method="post" asp-action="AddSport">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" name="SportName" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Add Sport</button>
+        </form>
+    </div>
+</div>

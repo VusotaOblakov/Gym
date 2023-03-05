@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using WebApplication2.Data;
 using WebApplication2.Models;
 
 namespace WebApplication2.Controllers
@@ -12,11 +13,13 @@ namespace WebApplication2.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly AppDbContext context;
 
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, AppDbContext context)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            this.context = context;
         }
 
         public IActionResult Index()
@@ -25,6 +28,85 @@ namespace WebApplication2.Controllers
             return View();
         }
 
+        public IActionResult EditAccessory()
+        {
+
+            var  accessories = context.Accessory.ToList();
+            var model = new AccessoryView
+            {
+                Accessories = accessories,
+            };
+
+            return View(model);
+        }
+        public IActionResult EditSport()
+        {
+
+            var sports = context.Sport.ToList();
+            var model = new SportView
+            {
+                Sports = sports,
+            };
+
+            // Return the view with the view model
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddSport(string SportName)
+        {
+            var sport = new Sport
+            {
+                name = SportName,
+            };
+
+            await context.Sport.AddAsync(sport);
+            context.SaveChanges();
+            return RedirectToAction("EditSport");
+        }
+        [HttpPost]
+        public IActionResult DeleteSport(int sportId)
+        {
+            var sportToDelete = context.Sport.Find(sportId);
+            if (sportToDelete == null)
+            {
+                return NotFound();
+            }
+
+            context.Sport.Remove(sportToDelete);
+            context.SaveChanges();
+
+            return RedirectToAction("EditSport");
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddAccessory(string AccessoryName)
+        {
+            var accessory = new Accessory
+            {
+                name = AccessoryName,
+            };
+            if (string.IsNullOrWhiteSpace(AccessoryName))
+            {
+                ModelState.AddModelError("", "Accessory name can't be null or whitespace.");
+                return RedirectToAction("EditAccessory");
+            }
+            await context.Accessory.AddAsync(accessory);
+            context.SaveChanges();
+            return RedirectToAction("EditAccessory");
+        }
+        [HttpPost]
+        public IActionResult DeleteAccessory(int accessoryId)
+        {
+            var accessoryToDelete = context.Accessory.Find(accessoryId);
+            if (accessoryToDelete == null)
+            {
+                return NotFound();
+            }
+
+            context.Accessory.Remove(accessoryToDelete);
+            context.SaveChanges();
+
+            return RedirectToAction("EditAccessory");
+        }
 
         public IActionResult EditRoles()
         {

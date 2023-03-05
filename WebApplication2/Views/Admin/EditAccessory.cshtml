@@ -1,0 +1,43 @@
+﻿@model WebApplication2.Models.AccessoryView
+
+<h2>Edit Accessories</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Existing Accessories</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var accessory in Model.Accessories)
+                {
+                    <tr>
+                        <td>@accessory.name</td>
+                        <td>
+                            <form method="post" asp-action="DeleteAccessory">
+                                <input type="hidden" name="accessoryId" value="@accessory.id" />
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h3>Add New Accessory</h3>
+
+        <form method="post" asp-action="AddAccessory">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" name="AccessoryName" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Add Accessory</button>
+        </form>
+    </div>
+</div>

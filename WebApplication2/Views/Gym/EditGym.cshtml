@@ -1,27 +1,55 @@
-﻿@model WebApplication2.Models.Gym
+﻿@model WebApplication2.Models.EditGym
 
-@{
-}
+
 
 <h2>Edit Gym</h2>
 
 <form asp-action="EditGym" method="post">
-    <input type="hidden" asp-for="id" />
-
+    <input type="hidden" asp-for="gym.id" />
+    <input type="hidden" asp-for="gym.owner_id" />
     <div class="form-group">
-        <label asp-for="name"></label>
-        <input type="text" asp-for="name" class="form-control" />
+        <label asp-for="gym.name"></label>
+        <input type="text" asp-for="gym.name" class="form-control" />
     </div>
 
     <div class="form-group">
-        <label asp-for="adress"></label>
-        <input type="text" asp-for="adress" class="form-control" />
+        <label asp-for="gym.adress"></label>
+        <input type="text" asp-for="gym.adress" class="form-control" />
     </div>
 
     <div class="form-group">
-        <label asp-for="description"></label>
-        <textarea asp-for="description" class="form-control"></textarea>
+        <label asp-for="gym.description"></label>
+        <textarea asp-for="gym.description" class="form-control"></textarea>
     </div>
-
+    <div class="form-group">
+        <label asp-for="gym.price"></label>
+        <input type="number" asp-for="gym.price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Accessories">Accessories:</label>
+        @for (var index = 0; index < @Model.Accessories.Count(); index++)
+            {
+                <input type="checkbox" asp-for="@Model.Accessories[index].IsSelected" class="form-check-input" />
+                <label class="form-check-label" asp-for="@Model.Accessories[index].IsSelected">
+                   @Model.Accessories[index].AccessoryName
+                </label>
+                <input type="hidden" asp-for="@Model.Accessories[index].AccessoryId" />
+                <input type="hidden" asp-for="@Model.Accessories[index].AccessoryName" />
+                <br />
+            }
+    </div>
+        <div class="form-group">
+        <label asp-for="Sports">Sports:</label>
+        @for (var index = 0; index < @Model.Sports.Count(); index++)
+            {
+                <input type="checkbox" asp-for="@Model.Sports[index].IsSelected" class="form-check-input" />
+                <label class="form-check-label" asp-for="@Model.Sports[index].IsSelected">
+                   @Model.Sports[index].SportName
+                </label>
+                <input type="hidden" asp-for="@Model.Sports[index].SportId" />
+                <input type="hidden" asp-for="@Model.Sports[index].SportName" />
+                <br />
+            }
+    </div>
     <button type="submit" class="btn btn-primary">Save</button>
 </form>

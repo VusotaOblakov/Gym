@@ -1,0 +1,26 @@
+﻿
+@model List<WebApplication2.Models.BookingOrder>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>OrderId</th>
+            <th>GymId</th>
+            <th>BookingDate</th>
+            <th>BookingHour</th>
+            <th>OrderDate</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var order in Model)
+        {
+       <tr>
+            <th>@order.Id</th>
+            <th>@order.GymId</th>
+            <th>@order.BookingDate.ToString("yyyy-MM-dd")</th>
+            <th>@order.BookingHour:00 - @(order.BookingHour + 1):00</th>
+            <th>@order.OrderDate.ToString("yyyy-MM-dd hh:ss")</th>
+        </tr>    
+        }
+    </tbody>
+</table>

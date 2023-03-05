@@ -10,6 +10,7 @@
         public string adress { get; set; }
         public int city_id { get; set; }
         public string owner_id { get; set; }
+        public decimal price  { get; set; }
 
     }
 

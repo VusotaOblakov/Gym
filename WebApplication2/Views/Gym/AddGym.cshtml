@@ -2,6 +2,10 @@
 
 
 <h2>Add Gym</h2>
+@if(TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
 
 <form asp-controller="Gym" asp-action="AddGym" method="post">
     <label asp-for="city_id" class="control-label"></label>
@@ -25,6 +29,34 @@
     <div class="form-group">
         <label asp-for="description"></label>
         <textarea asp-for="description" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="price"></label>
+        <input type="number" asp-for="price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Accessories:</label>
+        @for (var index = 0; index < @Model.Accessories.Count(); index++)
+        {
+            <div class="form-check">
+                <input type="checkbox" value="@Model.Accessories[index].id" name="idlis"  />
+                <label>@Model.Accessories[index].name</label>
+                <input type="hidden" asp-for="@Model.Accessories[index].id" />
+                <input type="hidden" asp-for="@Model.Accessories[index].name" />
+            </div>
+        }
+    </div>
+        <div class="form-group">
+        <label>Sports:</label>
+        @for (var index = 0; index < @Model.Sports.Count(); index++)
+        {
+            <div class="form-check">
+                <input type="checkbox" value="@Model.Sports[index].id" name="idsport"  />
+                <label>@Model.Sports[index].name</label>
+                <input type="hidden" asp-for="@Model.Sports[index].id" />
+                <input type="hidden" asp-for="@Model.Sports[index].name" />
+            </div>
+        }
     </div>
     <button type="submit" class="btn btn-primary">Add</button>
 </form>

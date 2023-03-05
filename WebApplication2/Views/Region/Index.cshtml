@@ -20,6 +20,8 @@
             <th>GymName</th>
             <th>GymDesc</th>
             <th>GymAddress</th>
+            <th>GymPrice</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody id="gyms">
@@ -35,6 +37,7 @@ function loadCities() {
         data: { region_id: regionId },
         success: function (result) {
             $('#citySelect').empty();
+            $('#citySelect').append($('<option>',{text: "Select a city"}));
             $.each(result, function (i, city) {
                 $('#citySelect').append($('<option>', {
                     value: city.id,
@@ -53,16 +56,26 @@ function loadGyms() {
         url: "/Gym/Index",
         data: { id: cityId },
         success: function (result) {
-            $('#gyms').empty();
+                        $('#gyms').empty();
+            console.log(result);
+            if(result.length==0){
+                console.log(result);
+              var html = '<div>nothing</div>'
+               $('#gyms').append(html);
+            }
+            else{
+
             $.each(result, function (i, gym) {
                 var html = '<tr>';
                 html += '<td>' + gym.id + '</td>';
                 html += '<td>' + gym.name + '</td>';
                 html += '<td>' + gym.description + '</td>';
                 html += '<td>' + gym.adress + '</td>';
+                html += '<td>' + gym.price + '</td>';
+                html += '<td><a href="Gym/GymDetails/'+gym.id+'">View</a></td>';
                 html += '</tr>';
                 $('#gyms').append(html);
-            });
+            });}
         }
     });
 }

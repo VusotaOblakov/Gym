@@ -1,0 +1,33 @@
+﻿@model WebApplication2.Models.GymView
+<h1>Gym Details</h1>
+
+<div>
+    <h4>Gym Name:</h4>
+    <p>@Model.Name</p>
+</div>
+
+<div>
+    <h4>Gym Description:</h4>
+    <p>@Model.Description</p>
+</div>
+
+<div>
+    <h4>Gym Address:</h4>
+    <p>@Model.Address</p>
+</div>
+<div>
+    <h4>Gym Price:</h4>
+    <p>@Model.Price</p>
+</div>
+<div>
+    <h4>Accessories:</h4>
+    <ul>
+        @foreach (var accessory in Model.Accessories)
+        {
+            <li>@accessory.name</li>
+        }
+    </ul>
+</div>
+<div>
+    <a asp-controller="Gym" asp-action="BookGym" asp-route-gymId="@Model.Id" class="btn btn-primary">Order a gym</a>
+</div>
