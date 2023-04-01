@@ -3,31 +3,19 @@
 @{
 }
 
-<select id="regionSelect" onchange="loadCities()">
+<select class="selection__gyms" id="regionSelect" onchange="loadCities()">
     <option value="">Select a region</option>
     @foreach (var region in Model)
     {
         <option value="@region.id">@region.name</option>
     }
 </select>
-<select id="citySelect" onchange="loadGyms()">
+<select class="selection__gyms" id="citySelect" onchange="loadGyms()">
     <option value="">Select a city</option>
-</select>
-<table class="table">
-    <thead>
-        <tr>
-            <th>GymId</th>
-            <th>GymName</th>
-            <th>GymDesc</th>
-            <th>GymAddress</th>
-            <th>GymPrice</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody id="gyms">
+</select >
+    <div id="gyms">
 
-    </tbody>
-</table>
+    </div>
 <script>
 function loadCities() {
     var regionId = $('#regionSelect').val();
@@ -66,14 +54,19 @@ function loadGyms() {
             else{
 
             $.each(result, function (i, gym) {
-                var html = '<tr>';
-                html += '<td>' + gym.id + '</td>';
-                html += '<td>' + gym.name + '</td>';
-                html += '<td>' + gym.description + '</td>';
-                html += '<td>' + gym.adress + '</td>';
-                html += '<td>' + gym.price + '</td>';
-                html += '<td><a href="Gym/GymDetails/'+gym.id+'">View</a></td>';
-                html += '</tr>';
+                var html = '<div class="gym__flex">';
+                html += '<div class="cart__flex">';
+                html += '<h3 class="cart__title">' + gym.name + '</h3>';
+                html += '<p class="cart__price">' + gym.price + '</p>';
+                html += '</div>';
+                html += '<div class="cart__center">';
+                html += '<p>' + gym.description + '</p>';
+                html += '</div>';
+                html += '<div class="cart__flex">';
+                html += '<p>' + gym.adress + '</p>';
+                html += '<p><a href="Gym/GymDetails/'+gym.id+'">View</a></p>';
+                html += '</div>';
+                html += '</div>';
                 $('#gyms').append(html);
             });}
         }

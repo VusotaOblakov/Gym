@@ -204,12 +204,35 @@ namespace WebApplication2.Controllers
             {
                 Id = user.Id,
                 Name = user.UserName,
-                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
+                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault(),
+                LockoutEnd = user.LockoutEnd
             };
 
             ViewBag.Roles = _roleManager.Roles.Select(r => new SelectListItem { Value = r.Name, Text = r.Name }).ToList();
 
             return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> BanUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
+            }
+            return RedirectToAction("EditUser", new { id = id });
+        }
+        [HttpPost]
+        public async Task<IActionResult> UnBanUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                await _userManager.SetLockoutEndDateAsync(user, null);
+            }
+            return RedirectToAction("EditUser", new { id = id });
         }
 
         [HttpPost]

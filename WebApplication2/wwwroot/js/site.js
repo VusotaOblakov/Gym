@@ -1,4 +1,9 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function worktime() {
+    var startworkval = document.getElementById('startwork') || document.getElementById('gym_startwork') ;
+    var endworkval = document.getElementById('endwork') || document.getElementById('gym_endwork');
+        if (Number(startworkval.value) > Number(endworkval.value)) {
+            alert('Start Work cannot be greater than End Work');
+            event.preventDefault();
+        }
+}
 
-// Write your JavaScript code.

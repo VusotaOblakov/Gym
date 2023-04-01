@@ -58,6 +58,14 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByNameAsync(model.Name);
+                if (user.LockoutEnd != null )
+                {
+                    var lockoutEnd = await _userManager.GetLockoutEndDateAsync(user);
+                    var message = $"Your account has been locked out until {lockoutEnd}.";
+                    ModelState.AddModelError(string.Empty, message);
+                    return View(model);
+                }
                 var result = await _signInManager.PasswordSignInAsync(model.Name, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {

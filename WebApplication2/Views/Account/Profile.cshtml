@@ -2,16 +2,21 @@
 @{
     ViewData["Title"] = "Profile";
 }
-
+<div class="profile__container">
 <h1>@ViewData["Title"]</h1>
 
 <p>Hello, @Model.Name!</p>
 
 <p>Your role is: @Model.Role</p>
-<ul>
-    <li><a asp-controller="Gym" asp-action="OwnedGyms">OwnedGyms</a></li>
-    <li><a asp-controller="Gym" asp-action="OrderedGyms">OrderedGyms</a></li>
-</ul>
+
+    <div class="link__container">
+        <a class="btn btn-primary" asp-controller="Gym" asp-action="OwnedGyms">OwnedGyms</a>
+        <a class="btn btn-primary" asp-controller="Gym" asp-action="OrderedGyms">OrderedGyms</a>
+    </div>
+
+
 <form asp-controller="Account" asp-action="Logout" method="post">
     <button type="submit" class="btn btn-primary">Logout</button>
 </form>
+
+</div>

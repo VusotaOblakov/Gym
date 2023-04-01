@@ -123,6 +123,8 @@ namespace WebApplication2.Controllers
                 gym.adress = model.gym.adress;
                 gym.description = model.gym.description;
                 gym.price = model.gym.price;
+                gym.startwork = model.gym.startwork;
+                gym.endwork = model.gym.endwork;
 
                 await context.SaveChangesAsync();
 
@@ -159,7 +161,9 @@ namespace WebApplication2.Controllers
                     name = gym.name,
                     description = gym.description,
                     adress = gym.adress,
-                    price = gym.price
+                    price = gym.price,
+                    startwork = gym.startwork,
+                    endwork = gym.endwork
                 };
                 if (user != null)
                 {
@@ -231,8 +235,15 @@ namespace WebApplication2.Controllers
                       ga => ga.accessory_id,
                       a => a.id,
                       (ga, a) => a);
+            var gymSports = context.GymSport
+            .Where(ga => ga.gym_id == id)
+            .Join(context.Sport,
+            ga => ga.sport_id,
+            a => a.id,
+            (ga, a) => a);
 
             List<Accessory> accessoryNames = gymAccessories.ToList();
+            List<Sport> sportNames = gymSports.ToList();
             var viewModel = new GymView
             {
                 Id = id,
@@ -241,13 +252,15 @@ namespace WebApplication2.Controllers
                 Description = gym.description,
                 Price = gym.price,
                 Accessories = accessoryNames,
+                Sports = sportNames,
+                Startwork = gym.startwork,
+                Endwork = gym.endwork
             };
             return View(viewModel);
         }
         [HttpGet]
         public IActionResult BookGym(int gymId, DateTime selectedDate)
         {
-            // Get the gym by ID
             var gym = context.Gym.Find(gymId);
             var availableHours = new List<int>();
             DateTime date1 = new();
@@ -255,20 +268,37 @@ namespace WebApplication2.Controllers
             {
                 selectedDate = DateTime.Now.Date;
             }
-            // Get all the booked hours for the selected date
-            var bookedHours = context.BookingOrders
-                .Where(o => o.GymId == gymId && o.BookingDate.Date == selectedDate)
-                .Select(o => o.BookingHour)
+
+            //var bookedHours = context.BookingOrders
+            //    .Where(o => o.GymId == gymId && o.BookingDate.Date == selectedDate)
+            //    .Select(o => o.BookingHour)
+            //    .ToList();
+
+
+            //for (int hour = gym.startwork; hour <= gym.endwork; hour++)
+            //{
+            //    if (!bookedHours.Contains(hour))
+            //    {
+            //        availableHours.Add(hour);
+            //    }
+            //}
+            int startHour = gym.startwork;
+            int endHour = gym.endwork;
+            var availableSlots = Enumerable.Range(gym.startwork, gym.endwork-gym.startwork)
+                .Select(hour => new {
+                    BookingDate = selectedDate,
+                    BookingHour = hour,
+                    AvailableSports = context.GymSport
+            .Join(context.Sport, gs => gs.sport_id, s => s.id, (gs, s) => new { Sport = s, GymSport = gs })
+            .Where(joined => joined.GymSport.gym_id == gymId && !context.BookingOrders.Any(b => b.GymId == gymId && b.BookedSportid == joined.GymSport.sport_id && b.BookingDate == selectedDate && b.BookingHour == hour))
+            .Select(joined => new { SportId = joined.Sport.id, SportName = joined.Sport.name })
+            .ToList()
+                })
                 .ToList();
 
-            // Add all hours to the available hours list that are not booked for the selected date
-            for (int hour = 9; hour <= 21; hour++)
-            {
-                if (!bookedHours.Contains(hour))
-                {
-                    availableHours.Add(hour);
-                }
-            }
+
+            ViewBag.AvailableSlots = availableSlots;
+
 
             var viewModel = new BookGymViewModel
             {
@@ -281,15 +311,16 @@ namespace WebApplication2.Controllers
             return View(viewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> BookGym(int GymId, DateTime bookingDate, int selectedHour)
+        [Authorize]
+        public async Task<IActionResult> BookGym(int GymId, DateTime bookingDate, string selectedSlot)
         {
+            var selectedValues = selectedSlot.Split('_');
+            var selectedHour = int.Parse(selectedValues[0]);
+            var selectedSportId = int.Parse(selectedValues[1]);
 
-            // Get the currently logged-in user
             var userId = _userManager.GetUserId(User);
 
-            // Get the selected gym
 
-            // Create a new booking order
           
                 var bookingOrder = new BookingOrder
                 {
@@ -297,15 +328,16 @@ namespace WebApplication2.Controllers
                     UserId = userId,
                     BookingDate = bookingDate,
                     BookingHour = selectedHour,
-                    OrderDate = DateTime.Now
+                    OrderDate = DateTime.Now,
+                    BookedSportid = selectedSportId
+
                 };
 
-                // Add the booking order to the database
+
                await context.BookingOrders.AddAsync(bookingOrder);
             
                 await context.SaveChangesAsync();
 
-                // Redirect to the confirmation page
                 return RedirectToAction("BookGym", new { gymId = GymId });
             
 
@@ -317,7 +349,11 @@ namespace WebApplication2.Controllers
         {
             var userId = _userManager.GetUserId(User);
 
-            var orders = context.BookingOrders.Where(g => g.UserId == userId).ToList();
+            var orders = context.BookingOrders
+                    .Where(g => g.UserId == userId)
+                    .OrderByDescending(g => g.BookingDate)
+                    .ToList();
+
 
             return View(orders);
         }

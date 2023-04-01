@@ -8,7 +8,7 @@
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAvtAcz5/Nd0KeGyRlGfTSIwAAAAACAAAAAAAQZgAAAAEAACAAAACa44ZTH19xBITgRTo4rN4UuVZeKllfW7b5ABXnaJR9lwAAAAAOgAAAAAIAACAAAABJzkXLz0wqGH2lrPlK72lX0ULdzJQSu98N4sYDozhUYSAAAAAovpM6Et2DkSPYLc4H7b0w5dnaSAodEGdEhvfTJvpNdEAAAADvgJhlSV5KufHos6X6+UU+XdRwJUITGHpvlIqJMecMXcOgNVWqKnlRNm45iSRRXVvdc5ZKn8jV7dSmabTtWj+B</EncryptedPassword>
     <_PublishTargetUrl>ftp://kyrsova.somee.com/www.kyrsova.somee.com</_PublishTargetUrl>
-    <History>False|2023-02-19T19:13:29.6413604Z;True|2023-02-17T21:34:29.4954353+02:00;False|2023-02-17T21:18:47.0447072+02:00;True|2023-02-17T20:56:15.8431340+02:00;False|2023-02-17T20:46:34.1183835+02:00;False|2023-02-17T20:40:02.1874767+02:00;</History>
+    <History>True|2023-03-16T19:25:25.2903908Z;False|2023-03-16T21:17:27.1918811+02:00;False|2023-03-16T21:13:24.7552345+02:00;False|2023-03-16T21:00:58.6607925+02:00;False|2023-03-16T20:57:47.1697886+02:00;False|2023-03-16T20:54:54.4149029+02:00;False|2023-03-16T20:43:36.0209974+02:00;False|2023-02-19T21:13:29.6413604+02:00;True|2023-02-17T21:34:29.4954353+02:00;False|2023-02-17T21:18:47.0447072+02:00;True|2023-02-17T20:56:15.8431340+02:00;False|2023-02-17T20:46:34.1183835+02:00;False|2023-02-17T20:40:02.1874767+02:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="appsettings.Development.json">
@@ -24,13 +24,13 @@
       <publishTime>04/05/2022 23:26:00</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Cryptography.Internal.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>01/24/2023 17:49:38</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Cryptography.KeyDerivation.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>01/24/2023 17:49:54</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>01/24/2023 17:49:58</publishTime>
     </File>
     <File Include="Microsoft.Bcl.AsyncInterfaces.dll">
       <publishTime>04/15/2020 01:39:12</publishTime>
@@ -39,52 +39,52 @@
       <publishTime>10/08/2022 02:35:40</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.Abstractions.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>01/13/2023 23:07:32</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>01/13/2023 23:08:06</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.Relational.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>01/13/2023 23:08:32</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.SqlServer.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>01/13/2023 23:09:24</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Caching.Abstractions.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/18/2022 19:31:34</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Caching.Memory.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/18/2022 19:31:44</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Configuration.Abstractions.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/18/2022 19:19:14</publishTime>
     </File>
     <File Include="Microsoft.Extensions.DependencyInjection.Abstractions.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/18/2022 19:19:10</publishTime>
     </File>
     <File Include="Microsoft.Extensions.DependencyInjection.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/18/2022 19:19:34</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Identity.Core.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>01/24/2023 17:49:56</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Identity.Stores.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>01/24/2023 17:49:56</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Logging.Abstractions.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/18/2022 19:19:52</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Logging.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/18/2022 19:20:18</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Options.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/18/2022 19:19:34</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Primitives.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/18/2022 19:19:10</publishTime>
     </File>
     <File Include="Microsoft.Identity.Client.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>06/22/2022 22:59:58</publishTime>
     </File>
     <File Include="Microsoft.Identity.Client.Extensions.Msal.dll">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -108,7 +108,7 @@
       <publishTime>07/01/2022 21:33:46</publishTime>
     </File>
     <File Include="Microsoft.SqlServer.Server.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>01/27/2022 19:19:08</publishTime>
     </File>
     <File Include="Microsoft.Win32.SystemEvents.dll">
       <publishTime>10/19/2020 21:40:26</publishTime>
@@ -153,7 +153,7 @@
       <publishTime>10/19/2020 21:49:30</publishTime>
     </File>
     <File Include="System.Configuration.ConfigurationManager.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/19/2020 21:52:30</publishTime>
     </File>
     <File Include="System.Drawing.Common.dll">
       <publishTime>10/19/2020 21:50:02</publishTime>
@@ -171,34 +171,34 @@
       <publishTime>10/19/2020 21:52:26</publishTime>
     </File>
     <File Include="System.Security.Permissions.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/19/2020 21:52:36</publishTime>
     </File>
     <File Include="System.Text.Encodings.Web.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/18/2022 19:19:30</publishTime>
     </File>
     <File Include="System.Text.Json.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>10/18/2022 19:30:30</publishTime>
     </File>
     <File Include="System.Windows.Extensions.dll">
       <publishTime>10/19/2020 21:53:38</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>02/19/2023 21:28:55</publishTime>
+      <publishTime>03/16/2023 21:19:24</publishTime>
     </File>
     <File Include="WebApplication2.deps.json">
-      <publishTime>02/19/2023 21:28:55</publishTime>
+      <publishTime>03/16/2023 21:19:23</publishTime>
     </File>
     <File Include="WebApplication2.dll">
-      <publishTime>02/19/2023 21:28:45</publishTime>
+      <publishTime>03/16/2023 21:19:17</publishTime>
     </File>
     <File Include="WebApplication2.exe">
-      <publishTime>02/19/2023 21:28:45</publishTime>
+      <publishTime>03/16/2023 21:19:18</publishTime>
     </File>
     <File Include="WebApplication2.pdb">
-      <publishTime>02/19/2023 21:28:45</publishTime>
+      <publishTime>03/16/2023 21:19:17</publishTime>
     </File>
     <File Include="WebApplication2.runtimeconfig.json">
-      <publishTime>02/19/2023 21:28:46</publishTime>
+      <publishTime>03/16/2023 21:19:18</publishTime>
     </File>
     <File Include="wwwroot/css/site.css">
       <publishTime>02/15/2023 16:20:23</publishTime>
@@ -381,7 +381,7 @@
       <publishTime>02/15/2023 16:20:23</publishTime>
     </File>
     <File Include="wwwroot/WebApplication2.styles.css">
-      <publishTime>02/19/2023 21:28:46</publishTime>
+      <publishTime>03/16/2023 21:19:18</publishTime>
     </File>
   </ItemGroup>
 </Project>

@@ -7,31 +7,30 @@
 <p>Select a date:</p>
 <form asp-controller="Gym" asp-action="BookGym" method="get">
     <div class="form-group">
-        <input type="date" name="selectedDate" value="@Model.SelectedDate.ToString("yyyy-MM-dd")" />
+        <input type="date" name="selectedDate" value="@Model.SelectedDate.ToString("yyyy-MM-dd")" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddMonths(3).ToString("yyyy-MM-dd")" />
         <button type="submit" class="btn btn-primary">Select Date</button>
         <input type="hidden" name="gymId" value="@Model.GymId" />
     </div>
 </form>
 
-@if (Model.AvailableHours != null && Model.AvailableHours.Any())
-{
-    <p>Select available hour(s) for @Model.SelectedDate:</p>
-    <form asp-controller="Gym" asp-action="BookGym" method="post">
+<form asp-controller="Gym" asp-action="BookGym" method="post">
         <input type="hidden" name="gymId" value="@Model.GymId" />
         <input type="hidden" name="bookingDate" value="@Model.SelectedDate.ToString("yyyy-MM-dd")" />
 
-        @foreach (var hour in Model.AvailableHours)
+ @foreach (var slot in ViewBag.AvailableSlots)
+    {
+        if (slot.AvailableSports.Count > 0)
         {
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="selectedHour" value="@hour" />
-                <label class="form-check-label">@hour:00 - @(hour + 1):00</label>
+            <div class="form-check ">
+                <p class="form-check-label">@slot.BookingHour:00 - @(slot.BookingHour + 1):00</p>
+                @foreach (var sport in slot.AvailableSports)
+                {
+                    <input class="form-check-input" type="radio" name="selectedSlot" value="@($"{slot.BookingHour}_{sport.SportId}")">
+                    <p class="form-check-label">@sport.SportName</p>
+                }
             </div>
         }
+    }
 
         <button type="submit" class="btn btn-primary">Book</button>
-    </form>
-}
-else if (Model.SelectedDate != null)
-{
-    <p>No available hours found for @Model.SelectedDate. Please select another date.</p>
-}
+</form>

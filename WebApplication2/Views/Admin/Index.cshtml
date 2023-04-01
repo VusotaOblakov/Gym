@@ -1,9 +1,10 @@
 ﻿<h1>Admin Dashboard</h1>
 <p>Welcome to the admin dashboard. Please select an option below:</p>
 
-<ul>
-    <li><a asp-controller="Admin" asp-action="EditRoles">Edit Roles</a></li>
-    <li><a asp-controller="Admin" asp-action="EditAccessory">Edit Accessories</a></li>
-    <li><a asp-controller="Admin" asp-action="AllUsers">All Users</a></li>
-    <li><a asp-controller="Gym" asp-action="AllGyms">All Gyms</a></li>
-</ul>
+<div class="gym__list">
+  <a class="btn btn-success gym__item"  asp-controller="Admin" asp-action="EditRoles">Edit Roles</a>
+  <a class="btn btn-success gym__item" asp-controller="Admin" asp-action="EditAccessory">Edit Accessories</a>
+  <a class="btn btn-success gym__item" asp-controller="Admin" asp-action="EditSport">Edit Sports</a>
+  <a class="btn btn-success gym__item" asp-controller="Admin" asp-action="AllUsers">All Users</a>
+  <a class="btn btn-success gym__item" asp-controller="Gym" asp-action="AllGyms">All Gyms</a>
+</div>

@@ -6,10 +6,10 @@
 @if (User.IsInRole("SuperAdmin"))
 {
     <p>
-        <a asp-action="AddGym">Add Gym</a>
+        <a class=" btn btn-outline-success" asp-action="AddGym">Add Gym</a>
     </p>
 }
-<table class="table">
+<table class="table text-light">
     <thead>
         <tr>
             <th>GymId</th>
@@ -29,12 +29,12 @@
                 <td>@gym.name</td>
                 <td>@gym.description</td>
                 <td>@gym.adress</td>
-                <td>@gym.owner_id</td>
+                <td><a asp-controller="Admin" asp-action="EditUser" asp-route-id="@gym.owner_id">@gym.owner_id</a></td>
                 <td>@gym.price</td>
                 <td>
-                    <a asp-action="EditGym" asp-route-id="@gym.id">Edit</a> |
-                    <a asp-action="DeleteGym" asp-route-id="@gym.id">Delete</a>
-                    <a asp-action="GymDetails" asp-route-id="@gym.id">View</a>
+                    <a class="btn btn-warning" asp-action="EditGym" asp-route-id="@gym.id">Edit</a> |
+                    <a class="btn btn-danger" asp-action="DeleteGym" asp-route-id="@gym.id">Delete</a> |
+                    <a class="btn btn-primary" asp-action="GymDetails" asp-route-id="@gym.id">View</a>
                 </td>
             </tr>    
         }

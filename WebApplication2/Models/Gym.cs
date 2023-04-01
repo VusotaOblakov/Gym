@@ -11,6 +11,8 @@
         public int city_id { get; set; }
         public string owner_id { get; set; }
         public decimal price  { get; set; }
+        public int startwork { get; set; }
+        public int endwork { get; set; }
 
     }
 

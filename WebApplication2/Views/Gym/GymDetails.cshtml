@@ -1,6 +1,6 @@
 ﻿@model WebApplication2.Models.GymView
 <h1>Gym Details</h1>
-
+<div class="detail__container">
 <div>
     <h4>Gym Name:</h4>
     <p>@Model.Name</p>
@@ -21,13 +21,23 @@
 </div>
 <div>
     <h4>Accessories:</h4>
-    <ul>
+    <div class="gym__list">
         @foreach (var accessory in Model.Accessories)
         {
-            <li>@accessory.name</li>
+            <p class="gym__item">@accessory.name</p>
         }
-    </ul>
+    </div>
+    <div>
+    <h4>Sports:</h4>
+    <div class="gym__list">
+        @foreach (var sport in Model.Sports)
+        {
+            <p class="gym__item">@sport.name</p>
+        }
+    </div>
 </div>
 <div>
     <a asp-controller="Gym" asp-action="BookGym" asp-route-gymId="@Model.Id" class="btn btn-primary">Order a gym</a>
+</div>
+</div>
 </div>
