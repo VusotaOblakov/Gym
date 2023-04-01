@@ -214,7 +214,7 @@ namespace WebApplication2.Controllers
 
             return RedirectToAction("AllGyms");
         }
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public IActionResult OwnedGyms()
         {
             var userId = _userManager.GetUserId(User);
