@@ -10,7 +10,7 @@
 <p>Your role is: @Model.Role</p>
 
     <div class="link__container">
-        @if (User.IsInRole("SuperAdmin, Admin"))
+        @if (User.IsInRole("SuperAdmin")||User.IsInRole("Admin"))
         {
             <a class="btn btn-primary" asp-controller="Gym" asp-action="OwnedGyms">OwnedGyms</a>
         }
