@@ -17,22 +17,43 @@ namespace WebApplication2.Controllers
             this.context = context;
             _userManager = userManager;
         }
-
+        //Повертає список залів в місті в JSON
         public IActionResult Index(int id)
         {
             var gyms = context.Gym.Where(c => c.city_id == id).ToList();
             return Json(gyms);
         }
+        //Список всіх наявних залів, доступ лише у SuperAdmin
+        //Також вивід імен власників, а не id через ViewBag
         [Authorize(Roles ="SuperAdmin")]
         public IActionResult AllGyms()
         {
             var gyms = context.Gym.ToList();
+            var users = _userManager.Users.ToDictionary(u => u.Id, u => u.UserName);
+            var ownerNames = new Dictionary<string, string>();
+            foreach (var gym in gyms)
+            {
+                if (!ownerNames.ContainsKey(gym.owner_id))
+                {
+                    if (users.TryGetValue(gym.owner_id, out var ownerName))
+                    {
+                        ownerNames.Add(gym.owner_id, ownerName);
+                    }
+                }
+            }
+            ViewBag.OwnerNames = ownerNames;
             return View(gyms);
         }
+        //Сторінка зі всіма полями на зал.Редагувати може лише власник або SuperAdmin
+        //Модель містить сам зал та списки Спорту та Приналежностей з можливістю вибору наявних через чекбокси
         [HttpGet]
         public async Task<IActionResult> EditGym(int id)
         {
             var gym = await context.Gym.FindAsync(id);
+            if (gym == null)
+            {
+                return NotFound();
+            }
             var gymAccessories = context.Accessory
             .Select(a => new GymAccessoryView
             {
@@ -58,14 +79,11 @@ namespace WebApplication2.Controllers
                 Sports = gymSports
             };
             string user =  _userManager.GetUserId(User);
-            if (gym == null)
-            {
-                return NotFound();
-            }
+
             if (!(User.IsInRole("Admin") && gym.owner_id == user || User.IsInRole("SuperAdmin")))
             {
                 TempData["ErrorMessage"] = "You do not have permission to edit this gym.";
-                return RedirectToAction("AllGyms");
+                return NotFound();
             }
 
             return View(model);
@@ -127,12 +145,14 @@ namespace WebApplication2.Controllers
                 gym.endwork = model.gym.endwork;
 
                 await context.SaveChangesAsync();
-
-                return RedirectToAction("OwnedGyms");
+                TempData["GoodMessage"] = "Gym edited!";
+                return RedirectToAction("EditGym", new { gym.id });
             }
 
             return View(model);
         }
+        //Функія для додачі нового залу(тільки адмін або суперадмін)
+        //Включені необхідні поля для залу,спорту та принадлежностей
         [HttpGet]
         [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> AddGym()
@@ -195,6 +215,8 @@ namespace WebApplication2.Controllers
             TempData["ErrorMessage"] = "Incorrect data!";
             return RedirectToAction("AddGym");
         }
+        //Видалення залу(можливість лише у власника і суперадміна)
+        [Authorize]
         public IActionResult DeleteGym(int id)
         {
             string user = _userManager.GetUserId(User);
@@ -202,7 +224,7 @@ namespace WebApplication2.Controllers
             if (!(User.IsInRole("Admin") && gym.owner_id == user || User.IsInRole("SuperAdmin")))
             {
                 TempData["ErrorMessage"] = "You do not have permission to delete this gym.";
-                return RedirectToAction("AllGyms");
+                return NotFound();
             }
             if (gym == null)
             {
@@ -212,22 +234,33 @@ namespace WebApplication2.Controllers
             context.Gym.Remove(gym);
             context.SaveChanges();
 
-            return RedirectToAction("AllGyms");
+            return RedirectToAction("OwnedGyms");
         }
+        //Вивід залів у яких поточний користувач власник
         [Authorize(Roles = "Admin, SuperAdmin")]
         public IActionResult OwnedGyms()
         {
             var userId = _userManager.GetUserId(User);
 
             var gyms = context.Gym.Where(g => g.owner_id == userId).ToList();
+            if (gyms.Count == 0)
+            {
+                TempData["InfoMessage"] = "You do not have any gyms";
+            }
 
             return View(gyms);
         }
+        //Вивід інформації про конкретний зал з переходом на бронювання
         [HttpGet]
         public  IActionResult GymDetails(int id)
         {
             var gym = context.Gym.Find(id);
 
+            if (gym == null)
+            {
+                TempData["ErrorMessage"] = "Gym doesn't exist";
+                return NotFound();
+            }
 
             var gymAccessories = context.GymAccessory
                 .Where(ga => ga.gym_id == id)
@@ -258,32 +291,19 @@ namespace WebApplication2.Controllers
             };
             return View(viewModel);
         }
+        //Бронювання залу на конкретну дату,час,спорт
         [HttpGet]
         public IActionResult BookGym(int gymId, DateTime selectedDate)
         {
             var gym = context.Gym.Find(gymId);
-            var availableHours = new List<int>();
             DateTime date1 = new();
             if (selectedDate ==  date1)
             {
                 selectedDate = DateTime.Now.Date;
             }
-
-            //var bookedHours = context.BookingOrders
-            //    .Where(o => o.GymId == gymId && o.BookingDate.Date == selectedDate)
-            //    .Select(o => o.BookingHour)
-            //    .ToList();
-
-
-            //for (int hour = gym.startwork; hour <= gym.endwork; hour++)
-            //{
-            //    if (!bookedHours.Contains(hour))
-            //    {
-            //        availableHours.Add(hour);
-            //    }
-            //}
             int startHour = gym.startwork;
             int endHour = gym.endwork;
+            //Вивід вільного спорту під конкретний час
             var availableSlots = Enumerable.Range(gym.startwork, gym.endwork-gym.startwork)
                 .Select(hour => new {
                     BookingDate = selectedDate,
@@ -304,24 +324,26 @@ namespace WebApplication2.Controllers
             {
                 GymId = gym.id,
                 GymName = gym.name,
-                AvailableHours = availableHours,
                 SelectedDate = selectedDate
             };
 
             return View(viewModel);
         }
+        //Бронювання залу на конкретну дату,час,спорт
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> BookGym(int GymId, DateTime bookingDate, string selectedSlot)
         {
+            if(selectedSlot == null)
+            {
+                TempData["ErrorMessage"] = "Please select any sport before booking!";
+                return RedirectToAction("BookGym", new { gymId = GymId });
+            }
             var selectedValues = selectedSlot.Split('_');
             var selectedHour = int.Parse(selectedValues[0]);
             var selectedSportId = int.Parse(selectedValues[1]);
-
             var userId = _userManager.GetUserId(User);
 
-
-          
                 var bookingOrder = new BookingOrder
                 {
                     GymId = GymId,
@@ -329,32 +351,30 @@ namespace WebApplication2.Controllers
                     BookingDate = bookingDate,
                     BookingHour = selectedHour,
                     OrderDate = DateTime.Now,
-                    BookedSportid = selectedSportId
-
+                    BookedSportid = selectedSportId,
+                    OrderPrice = context.Gym.Where(g => g.id == GymId).Select(g => g.price).FirstOrDefault()
                 };
 
 
-               await context.BookingOrders.AddAsync(bookingOrder);
-            
-                await context.SaveChangesAsync();
-
-                return RedirectToAction("BookGym", new { gymId = GymId });
-            
-
-
+            await context.BookingOrders.AddAsync(bookingOrder);
+               await context.SaveChangesAsync();
+            TempData["GoodMessage"] = $"Successfully booked!Booking order id is {bookingOrder.Id}";
+            return RedirectToAction("BookGym", new { gymId = GymId });
         }
+        //Вивід таблиці замовлень
         [HttpGet]
         [Authorize]
         public IActionResult OrderedGyms()
         {
             var userId = _userManager.GetUserId(User);
-
             var orders = context.BookingOrders
                     .Where(g => g.UserId == userId)
-                    .OrderByDescending(g => g.BookingDate)
+                    .OrderByDescending(g => g.Id)
                     .ToList();
-
-
+            if (orders.Count == 0)
+            {
+                TempData["InfoMessage"] = "You do not have any orders";
+            }
             return View(orders);
         }
 

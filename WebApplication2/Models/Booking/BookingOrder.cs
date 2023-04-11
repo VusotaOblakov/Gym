@@ -9,6 +9,7 @@
         public DateTime OrderDate { get; set; }
         public int BookingHour { get; set; }
         public int BookedSportid { get; set; }
+        public decimal OrderPrice { get; set; }
     }
 
 }

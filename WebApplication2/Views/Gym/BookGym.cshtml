@@ -1,7 +1,14 @@
 ﻿@model WebApplication2.Models.BookGymViewModel
 
 
-
+@if(TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger ">@TempData["ErrorMessage"]</div>
+}
+@if(TempData["GoodMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["GoodMessage"]</div>
+}
 <h1>Book Gym: @Model.GymName</h1>
 
 <p>Select a date:</p>
@@ -16,21 +23,26 @@
 <form asp-controller="Gym" asp-action="BookGym" method="post">
         <input type="hidden" name="gymId" value="@Model.GymId" />
         <input type="hidden" name="bookingDate" value="@Model.SelectedDate.ToString("yyyy-MM-dd")" />
-
+    <div class="form__carts">
  @foreach (var slot in ViewBag.AvailableSlots)
     {
         if (slot.AvailableSports.Count > 0)
         {
+          
             <div class="form-check ">
                 <p class="form-check-label">@slot.BookingHour:00 - @(slot.BookingHour + 1):00</p>
                 @foreach (var sport in slot.AvailableSports)
                 {
-                    <input class="form-check-input" type="radio" name="selectedSlot" value="@($"{slot.BookingHour}_{sport.SportId}")">
-                    <p class="form-check-label">@sport.SportName</p>
+                    <div class="cart__text">
+                            <input class="form-check-input" type="radio" name="selectedSlot" value="@($"{slot.BookingHour}_{sport.SportId}")">
+                            <p>@sport.SportName</p>
+                    </div>
+
                 }
             </div>
+          
         }
     }
-
+    </div>
         <button type="submit" class="btn btn-primary">Book</button>
 </form>

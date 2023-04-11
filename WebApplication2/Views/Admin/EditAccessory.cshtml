@@ -6,7 +6,7 @@
     <div class="col-md-6">
         <h3>Existing Accessories</h3>
 
-        <table class="table">
+        <table class="table text-light">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -33,9 +33,10 @@
         <h3>Add New Accessory</h3>
 
         <form method="post" asp-action="AddAccessory">
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label>Name:</label>
-                <input type="text" name="AccessoryName" class="form-control" />
+                <input type="text" asp-for="AccessoryName" class="form-control" />
             </div>
             <button type="submit" class="btn btn-primary">Add Accessory</button>
         </form>

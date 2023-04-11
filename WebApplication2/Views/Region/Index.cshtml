@@ -54,20 +54,23 @@ function loadGyms() {
             else{
 
             $.each(result, function (i, gym) {
-                var html = '<div class="gym__flex">';
-                html += '<div class="cart__flex">';
-                html += '<h3 class="cart__title">' + gym.name + '</h3>';
-                html += '<p class="cart__price">' + gym.price + '</p>';
-                html += '</div>';
-                html += '<div class="cart__center">';
-                html += '<p>' + gym.description + '</p>';
-                html += '</div>';
-                html += '<div class="cart__flex">';
-                html += '<p>' + gym.adress + '</p>';
-                html += '<p><a href="Gym/GymDetails/'+gym.id+'">View</a></p>';
-                html += '</div>';
-                html += '</div>';
-                $('#gyms').append(html);
+      var gymCard = `
+        <div class="card">
+          <div class="card-header">
+            <h4>${gym.name}</h4>
+          </div>
+          <div class="card-body">
+            <p class="card-text"><strong>Description:</strong> ${gym.description}</p>
+            <p class="card-text"><strong>Address:</strong> ${gym.adress}</p>
+            <p class="card-text"><strong>Worktime:</strong> ${gym.startwork}:00 - ${gym.endwork}:00</p>
+            <p class="card-text"><strong>Price:</strong> ${Intl.NumberFormat('uk-UA', { style: 'currency', currency: 'UAH' }).format(gym.price)}</p>
+            <a href="/Gym/GymDetails/${gym.id}" class="btn btn-primary">View Gym</a>
+          </div>
+        </div>
+      `;
+      
+      // Append gym card HTML to target element
+      $('#gyms').append(gymCard);
             });}
         }
     });

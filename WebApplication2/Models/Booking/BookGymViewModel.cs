@@ -4,7 +4,6 @@
     {
         public int GymId { get; set; }
         public string GymName { get; set; }
-        public List<int> AvailableHours { get; set; }
         public DateTime SelectedDate { get; set; }
 
     }

@@ -9,6 +9,10 @@
 {
     <div class="alert alert-success">@TempData["GoodMessage"]</div>
 }
+@if(TempData["InfoMessage"] != null)
+{
+    <div class="alert alert-info ">@TempData["InfoMessage"]</div>
+}
 
 
     <div class="gyms__owneds">
@@ -22,9 +26,12 @@
             <h3>Name: @gym.name</h3>
             <p>Description: @gym.description</p>
             <p>Adress: @gym.adress</p>
+            <p>Worktime: @gym.startwork:00 - @gym.endwork:00</p>
+            <p>Price:@string.Format(new System.Globalization.CultureInfo("uk-UA"), "{0:C}", gym.price)</p>
             <p>
-                <a class="btn btn-warning" asp-controller="Gym" asp-action="EditGym" asp-route-id="@gym.id">Edit</a> |
+                <a class="btn btn-warning" asp-controller="Gym" asp-action="EditGym" asp-route-id="@gym.id">Edit</a> 
                 <a class="btn btn-danger" asp-controller="Gym" asp-action="DeleteGym" asp-route-id="@gym.id">Delete</a>
+                <a class="btn btn-primary" asp-controller="Gym" asp-action="GymDetails" asp-route-id="@gym.id">View</a>
             </p>
         </div>    
         }

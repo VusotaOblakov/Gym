@@ -11,16 +11,13 @@ namespace WebApplication2.Controllers
         {
             this.context = context;
         }
-        // GET: RegionController'
 
 
+        //Вивід всіх областей
         public  IActionResult Index() {
             var regions =  context.Region.ToList();
             return View(regions);
         }
-        public IActionResult TestPage()
-        {
-            return View();
-        }
+
     }
 }

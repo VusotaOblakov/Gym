@@ -12,9 +12,8 @@ namespace WebApplication2.Controllers
         {
             this.context = context;
         }
-        // GET: RegionController'
 
-
+        //Отримання міст по області в JSON
         public IActionResult GetCitiesByRegion(int region_id)
         {
             var cities = context.City.Where(c => c.region_id == region_id).ToList();

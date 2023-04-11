@@ -1,0 +1,81 @@
+﻿@model List<WebApplication2.Models.BookingOrder>
+@{
+    decimal orderprice = 0;
+}
+@if(TempData["Message"] != null)
+{
+    <div class="alert alert-warning ">@TempData["Message"]</div>
+}
+<h1 class="ignoreForPdf">Reports </h1>
+
+<p class="ignoreForPdf">All Orders</p>
+
+<button id="btnPrint" class="btn btn-primary ignoreForPdf">Print</button>
+
+
+<form asp-controller="Admin" asp-action="Report" method="get">
+    <label class="control-label "></label>
+    <select name="cityId" class="form-control ignoreForPdf">
+        <option value="">-- Select a city --</option>
+        @foreach (var city in ViewBag.Cities)
+        {
+            <option value="@city.Value">@city.Text</option>
+        }
+    </select>
+
+
+
+
+    <div class="form-group ignoreForPdf">
+        <label for="start-date">First date:</label>
+        <input type="date" name="selectedDate" value="@DateTime.Today"/>
+        <label for="end-date">Last Date:</label>
+        <input type="date" name="endDate" value="@DateTime.Today"/>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+<table  id ="tblOrders "class="table text-light">
+    <thead>
+    <tr>
+        <th>OrderId</th>
+        <th>GymId</th>
+        <th>BookingDate</th>
+        <th>BookingHour</th>
+        <th>OrderDate</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach(var order in Model)
+    {
+        <tr>
+            <th>@order.Id</th>
+            <th>@order.GymId</th>
+            <th>@order.BookingDate.ToString("yyyy-MM-dd")</th>
+            <th>@order.BookingHour:00 - @(order.BookingHour + 1):00</th>
+            <th>@order.OrderDate.ToString("yyyy-MM-dd hh:ss")</th>
+            <th>@order.OrderPrice</th>
+        </tr>    
+    }
+    </tbody>
+</table>
+<table class="table text-light">
+    @foreach (var order in Model)
+    {
+        orderprice += order.OrderPrice;
+    }
+    <th>Number All Gyms: @Model.Count</th>
+    <th> All Price: @orderprice</th>
+</table>
+
+
+<script>
+    $(document).ready(function () {
+        $("#btnPrint").click(function () {
+            $(".ignoreForPdf").hide();
+            window.print();
+        $(".ignoreForPdf").show();
+        });
+        });
+</script>

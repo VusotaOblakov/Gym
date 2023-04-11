@@ -17,15 +17,18 @@ namespace WebApplication2.Controllers
             _signInManager = signInManager;
             _roleManager = roleManager;
         }
+        //Якщо немає доступу
         public IActionResult AccessDenied()
         {
             return View();
         }
+        //Сторінка Регістрація
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+        //Процесс регістрації
         [HttpPost]
         public async Task<IActionResult> Register(RegisterModel model)
         {
@@ -47,12 +50,13 @@ namespace WebApplication2.Controllers
             }
             return View(model);
         }
+        //Авторизація
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
-
+        //Процесс Авторизації з виводом помилок при авторизації
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
@@ -75,6 +79,7 @@ namespace WebApplication2.Controllers
             }
             return View(model);
         }
+        //Сторінка з профілем
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Profile()
@@ -89,7 +94,8 @@ namespace WebApplication2.Controllers
 
             return View(model);
         }
-
+        
+        //Вихід з аккаунту
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

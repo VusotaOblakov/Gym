@@ -29,11 +29,11 @@
                 <td>@gym.name</td>
                 <td>@gym.description</td>
                 <td>@gym.adress</td>
-                <td><a asp-controller="Admin" asp-action="EditUser" asp-route-id="@gym.owner_id">@gym.owner_id</a></td>
+                <td><a asp-controller="Admin" asp-action="EditUser" asp-route-id="@gym.owner_id">@ViewBag.OwnerNames[gym.owner_id]</a></td>
                 <td>@gym.price</td>
                 <td>
-                    <a class="btn btn-warning" asp-action="EditGym" asp-route-id="@gym.id">Edit</a> |
-                    <a class="btn btn-danger" asp-action="DeleteGym" asp-route-id="@gym.id">Delete</a> |
+                    <a class="btn btn-warning" asp-action="EditGym" asp-route-id="@gym.id">Edit</a> 
+                    <a class="btn btn-danger" asp-action="DeleteGym" asp-route-id="@gym.id">Delete</a> 
                     <a class="btn btn-primary" asp-action="GymDetails" asp-route-id="@gym.id">View</a>
                 </td>
             </tr>    

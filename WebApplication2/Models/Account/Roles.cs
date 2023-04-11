@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication2.Models
 {
     public class EditRolesViewModel
     {
-        public string RoleName { get; set; }
+        [Required]
+        public string roleName { get; set; }
         public List<IdentityRole> Roles { get; set; }
     }
 }

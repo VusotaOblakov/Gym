@@ -1,10 +1,14 @@
 ﻿@model WebApplication2.Models.EditGym
 
 
-
+@if(TempData["GoodMessage"] != null)
+{
+    <div class="alert alert-success ">@TempData["GoodMessage"]</div>
+}
 <h2>Edit Gym</h2>
 
 <form asp-action="EditGym" method="post" onsubmit="worktime()">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <input type="hidden" asp-for="gym.id" />
     <input type="hidden" asp-for="gym.owner_id" />
     <div class="form-group">
@@ -41,7 +45,7 @@
         @for (var index = 0; index < @Model.Accessories.Count(); index++)
             {
                 <input type="checkbox" asp-for="@Model.Accessories[index].IsSelected" class="form-check-input" />
-                <label class="form-check-label" asp-for="@Model.Accessories[index].IsSelected">
+                <label>
                    @Model.Accessories[index].AccessoryName
                 </label>
                 <input type="hidden" asp-for="@Model.Accessories[index].AccessoryId" />
@@ -54,7 +58,7 @@
         @for (var index = 0; index < @Model.Sports.Count(); index++)
             {
                 <input type="checkbox" asp-for="@Model.Sports[index].IsSelected" class="form-check-input" />
-                <label class="form-check-label" asp-for="@Model.Sports[index].IsSelected">
+                <label class="" asp-for="@Model.Sports[index].IsSelected">
                    @Model.Sports[index].SportName
                 </label>
                 <input type="hidden" asp-for="@Model.Sports[index].SportId" />

@@ -21,13 +21,13 @@ namespace WebApplication2.Controllers
             _userManager = userManager;
             this.context = context;
         }
-
+        //Меню з пунктами адмінки
         public IActionResult Index()
         {
 
             return View();
         }
-
+       //Редагування Принадлежностей(СRUD)
         public IActionResult EditAccessory()
         {
 
@@ -39,6 +39,7 @@ namespace WebApplication2.Controllers
 
             return View(model);
         }
+        //Редагування Спорту(СRUD)
         public IActionResult EditSport()
         {
 
@@ -48,9 +49,9 @@ namespace WebApplication2.Controllers
                 Sports = sports,
             };
 
-            // Return the view with the view model
             return View(model);
         }
+        //Додавання нового спорту
         [HttpPost]
         public async Task<IActionResult> AddSport(string SportName)
         {
@@ -63,6 +64,7 @@ namespace WebApplication2.Controllers
             context.SaveChanges();
             return RedirectToAction("EditSport");
         }
+        //Видалення  спорту
         [HttpPost]
         public IActionResult DeleteSport(int sportId)
         {
@@ -77,6 +79,7 @@ namespace WebApplication2.Controllers
 
             return RedirectToAction("EditSport");
         }
+        //Додавання нової принадлежності
         [HttpPost]
         public async Task<IActionResult> AddAccessory(string AccessoryName)
         {
@@ -93,6 +96,7 @@ namespace WebApplication2.Controllers
             context.SaveChanges();
             return RedirectToAction("EditAccessory");
         }
+        //Видалення принадлежності
         [HttpPost]
         public IActionResult DeleteAccessory(int accessoryId)
         {
@@ -107,7 +111,7 @@ namespace WebApplication2.Controllers
 
             return RedirectToAction("EditAccessory");
         }
-
+        //Редагування Ролей
         public IActionResult EditRoles()
         {
             var roles = _roleManager.Roles.ToList();
@@ -118,6 +122,7 @@ namespace WebApplication2.Controllers
 
             return View(model);
         }
+        //Додавання Ролей
         [HttpPost]
         public async Task<IActionResult> AddRole(string roleName)
         {
@@ -144,6 +149,7 @@ namespace WebApplication2.Controllers
                 return View("EditRoles");
             }
         }
+        //Видалення Ролі
         [HttpPost]
         public async Task<IActionResult> DeleteRole(string roleName)
         {
@@ -171,7 +177,7 @@ namespace WebApplication2.Controllers
                 Roles = await _roleManager.Roles.ToListAsync()
             });
         }
-
+        //Список всіх користувачів
         public IActionResult AllUsers()
         {
             var users = _userManager.Users.ToList();
@@ -189,7 +195,7 @@ namespace WebApplication2.Controllers
             }
             return View(model);
         }
-
+        //Редагування Користувача
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
@@ -212,6 +218,7 @@ namespace WebApplication2.Controllers
 
             return View(model);
         }
+        //Блокування користувача
         [HttpPost]
         public async Task<IActionResult> BanUser(string id)
         {
@@ -223,6 +230,7 @@ namespace WebApplication2.Controllers
             }
             return RedirectToAction("EditUser", new { id = id });
         }
+        //Розблокування користувача
         [HttpPost]
         public async Task<IActionResult> UnBanUser(string id)
         {
@@ -268,7 +276,7 @@ namespace WebApplication2.Controllers
 
             return RedirectToAction("AllUsers");
         }
-
+        //Видалення користувача
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -281,10 +289,51 @@ namespace WebApplication2.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction(nameof(AllUsers));
+                return RedirectToAction("AllUsers");
             }
 
-            return RedirectToAction(nameof(AllUsers));
+            return RedirectToAction("AllUsers");
+        }
+        [HttpGet]
+        public async Task<IActionResult> Report(DateTime selectedDate, DateTime endDate, int cityId)
+        {
+            ViewBag.Cities = await context.City.Select(c => new SelectListItem { Value = c.id.ToString(), Text = c.name }).ToListAsync();
+
+            var bookingOrders = from bo in context.BookingOrders
+                                join g in context.Gym on bo.GymId equals g.id
+                                where g.city_id == cityId
+                                select bo;
+            bookingOrders.ToList();
+            List<BookingOrder> bookingOrdersList = bookingOrders.ToList();
+
+            if (selectedDate == default)
+            {
+                selectedDate = DateTime.MinValue;
+                endDate = DateTime.MaxValue;
+            }
+
+            //
+
+            if (cityId > 0)
+            {
+                var orders = from bo in context.BookingOrders
+                             join g in context.Gym on bo.GymId equals g.id
+                             where bo.BookingDate >= selectedDate && bo.BookingDate <= endDate && g.city_id == cityId
+                             select bo;
+                orders.ToList();
+                List<BookingOrder> ordersList = orders.ToList();
+                var cityname = context.City.Find(cityId)?.name;
+                
+                TempData["Message"] =$"Choosen city {cityname} from {selectedDate.ToString("dd/MM/yyyy")} to {endDate.ToString("dd/MM/yyyy")}";
+                return View(ordersList);
+            }
+            else
+            {
+                TempData["Message"] = $"Choosen orders from {selectedDate.ToString("dd/MM/yyyy")} to {endDate.ToString("dd/MM/yyyy")}";
+                var orders = context.BookingOrders
+                   .Where(row => row.BookingDate >= selectedDate && row.BookingDate <= endDate).ToList();
+                return View(orders);
+            }
         }
 
     }

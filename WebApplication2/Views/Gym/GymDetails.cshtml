@@ -17,7 +17,7 @@
 </div>
 <div>
     <h4>Gym Price:</h4>
-    <p>@Model.Price</p>
+    <p>@string.Format(new System.Globalization.CultureInfo("uk-UA"), "{0:C}", Model.Price)</p>
 </div>
 <div>
     <h4>Accessories:</h4>
