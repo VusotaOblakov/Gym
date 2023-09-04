@@ -10,7 +10,7 @@ namespace WebApplication2.Models
         public ProfileModel(IdentityUser user, UserManager<IdentityUser> userManager)
         {
             Name = user.UserName;
-            Role = userManager.GetRolesAsync(user).Result.FirstOrDefault();
+            Role = userManager.GetRolesAsync(user).Result.FirstOrDefault()!;
         }
     }
 }

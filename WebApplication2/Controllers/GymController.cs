@@ -94,7 +94,7 @@ namespace WebApplication2.Controllers
 
             if (ModelState.IsValid)
             {
-                var gym = await context.Gym.FindAsync(model.gym.id);
+                var gym = await context.Gym.FindAsync(model.gym!.id);
                 var gymAccessories = context.GymAccessory.Where(ga => ga.gym_id == model.gym.id);
                 var gymAccessoryIds = gymAccessories.Select(ga => ga.accessory_id).ToList();
 
@@ -105,7 +105,7 @@ namespace WebApplication2.Controllers
                     return NotFound();
                 }
                 // Add new accessories
-                foreach (var accessoryId in model.Accessories)
+                foreach (var accessoryId in model.Accessories!)
                 {
                     if (!gymAccessories.Any(a =>a.accessory_id==accessoryId.AccessoryId) && accessoryId.IsSelected==true)
                     {
@@ -113,7 +113,7 @@ namespace WebApplication2.Controllers
                     }
                 }
                 // Add new sports
-                foreach (var sportId in model.Sports)
+                foreach (var sportId in model.Sports!)
                 {
                     if (!gymSports.Any(a => a.sport_id == sportId.SportId) && sportId.IsSelected == true)
                     {
@@ -220,7 +220,7 @@ namespace WebApplication2.Controllers
         public IActionResult DeleteGym(int id)
         {
             string user = _userManager.GetUserId(User);
-            var gym = context.Gym.Find(id);
+            var gym = context.Gym.Find(id)!;
             if (!(User.IsInRole("Admin") && gym.owner_id == user || User.IsInRole("SuperAdmin")))
             {
                 TempData["ErrorMessage"] = "You do not have permission to delete this gym.";
@@ -250,8 +250,70 @@ namespace WebApplication2.Controllers
 
             return View(gyms);
         }
-        //Вивід інформації про конкретний зал з переходом на бронювання
         [HttpGet]
+        public IActionResult GymEditPrice(int id)
+        {
+            string user = _userManager.GetUserId(User);
+            var gym = context.Gym.Find(id)!;
+            if (!(User.IsInRole("Admin") && gym.owner_id == user || User.IsInRole("SuperAdmin")))
+            {
+                TempData["ErrorMessage"] = "You do not have permission to edit price for this  gym.";
+                return NotFound();
+            }
+            if (gym == null)
+            {
+                return NotFound();
+            }
+            var gymSports = context.GymSport
+            .Where(ga => ga.gym_id == id)
+            .Join(context.Sport,
+                ga => ga.sport_id,
+                a => a.id,
+                (ga, a) => new SportWithPrice { Sport = a, Price = ga.price })
+            .ToList();
+            ViewBag.SportsWithPrice = gymSports;
+            ViewBag.GymId = id;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult GymEditPrice(int gymId, List<int> sportId, List<decimal> price)
+        {
+            string user = _userManager.GetUserId(User);
+            var gym = context.Gym.Find(gymId)!;
+            if (!(User.IsInRole("Admin") && gym.owner_id == user || User.IsInRole("SuperAdmin")))
+            {
+                TempData["ErrorMessage"] = "You do not have permission to edit price for this  gym.";
+                return NotFound();
+            }
+            if (gym == null)
+            {
+                return NotFound();
+            }
+
+            for (int i = 0; i < sportId.Count; i++)
+            {
+                int currentSportId = sportId[i];
+                decimal currentPrice = price[i];
+
+                var gymSport = context.GymSport
+                    .FirstOrDefault(gs => gs.gym_id == gymId && gs.sport_id == currentSportId);
+
+                if (gymSport != null)
+                {
+                    if (gymSport.price != currentPrice) {
+                        gymSport.price = currentPrice;
+                        context.SaveChanges();
+                    }
+                    
+                }
+            }
+            TempData["GoodMessage"] = "All prices saved!";
+
+            return RedirectToAction("GymEditPrice", new { id = gymId });
+        }
+
+            //Вивід інформації про конкретний зал з переходом на бронювання
+            [HttpGet]
         public  IActionResult GymDetails(int id)
         {
             var gym = context.Gym.Find(id);
@@ -268,15 +330,17 @@ namespace WebApplication2.Controllers
                       ga => ga.accessory_id,
                       a => a.id,
                       (ga, a) => a);
+
             var gymSports = context.GymSport
-            .Where(ga => ga.gym_id == id)
-            .Join(context.Sport,
-            ga => ga.sport_id,
-            a => a.id,
-            (ga, a) => a);
+                .Where(ga => ga.gym_id == id)
+                .Join(context.Sport,
+                    ga => ga.sport_id,
+                    a => a.id,
+                    (ga, a) => new SportWithPrice { Sport = a, Price = ga.price })
+                .ToList();
 
             List<Accessory> accessoryNames = gymAccessories.ToList();
-            List<Sport> sportNames = gymSports.ToList();
+            List<SportWithPrice> sportNames = gymSports.ToList();
             var viewModel = new GymView
             {
                 Id = id,
@@ -295,7 +359,7 @@ namespace WebApplication2.Controllers
         [HttpGet]
         public IActionResult BookGym(int gymId, DateTime selectedDate)
         {
-            var gym = context.Gym.Find(gymId);
+            var gym = context.Gym.Find(gymId)!;
             DateTime date1 = new();
             if (selectedDate ==  date1)
             {
@@ -311,7 +375,7 @@ namespace WebApplication2.Controllers
                     AvailableSports = context.GymSport
             .Join(context.Sport, gs => gs.sport_id, s => s.id, (gs, s) => new { Sport = s, GymSport = gs })
             .Where(joined => joined.GymSport.gym_id == gymId && !context.BookingOrders.Any(b => b.GymId == gymId && b.BookedSportid == joined.GymSport.sport_id && b.BookingDate == selectedDate && b.BookingHour == hour))
-            .Select(joined => new { SportId = joined.Sport.id, SportName = joined.Sport.name })
+            .Select(joined => new { SportId = joined.Sport.id, SportName = joined.Sport.name, SportPrice = joined.GymSport.price })
             .ToList()
                 })
                 .ToList();
@@ -352,8 +416,11 @@ namespace WebApplication2.Controllers
                     BookingHour = selectedHour,
                     OrderDate = DateTime.Now,
                     BookedSportid = selectedSportId,
-                    OrderPrice = context.Gym.Where(g => g.id == GymId).Select(g => g.price).FirstOrDefault()
-                };
+                    OrderPrice = context.GymSport
+                    .Where(gs => gs.gym_id == GymId && gs.sport_id == selectedSportId)
+                    .Select(gs => gs.price)
+                    .FirstOrDefault()
+        };
 
 
             await context.BookingOrders.AddAsync(bookingOrder);

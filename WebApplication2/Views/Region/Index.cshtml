@@ -5,7 +5,7 @@
 
 <select class="selection__gyms" id="regionSelect" onchange="loadCities()">
     <option value="">Select a region</option>
-    @foreach (var region in Model)
+    @foreach (var region in Model!)
     {
         <option value="@region.id">@region.name</option>
     }

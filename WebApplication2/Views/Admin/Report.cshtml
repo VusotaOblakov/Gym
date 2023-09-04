@@ -47,7 +47,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach(var order in Model)
+    @foreach(var order in Model!)
     {
         <tr>
             <th>@order.Id</th>
@@ -65,8 +65,11 @@
     {
         orderprice += order.OrderPrice;
     }
+    <tr>
     <th>Number All Gyms: @Model.Count</th>
     <th> All Price: @orderprice</th>
+    </tr>
+
 </table>
 
 

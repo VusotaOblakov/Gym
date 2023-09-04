@@ -4,7 +4,7 @@ namespace WebApplication2.Controllers
 {
     public class ErrorController : Controller
     {
-        public IActionResult NotFound()
+        public IActionResult  NotFound()
         {
             return View();
         }

@@ -50,7 +50,7 @@
 
     <div class="form-group">
         <label>Accessories:</label>
-        @for (var index = 0; index < @Model.Accessories.Count(); index++)
+        @for (var index = 0; index < @Model!.Accessories.Count(); index++)
         {
             <div>
                 <input type="checkbox" value="@Model.Accessories[index].id" name="idlis"  />

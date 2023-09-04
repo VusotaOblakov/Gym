@@ -3,7 +3,7 @@
 <div class="detail__container">
 <div>
     <h4>Gym Name:</h4>
-    <p>@Model.Name</p>
+    <p>@Model!.Name</p>
 </div>
 
 <div>
@@ -22,7 +22,7 @@
 <div>
     <h4>Accessories:</h4>
     <div class="gym__list">
-        @foreach (var accessory in Model.Accessories)
+        @foreach (var accessory in Model.Accessories!)
         {
             <p class="gym__item">@accessory.name</p>
         }
@@ -30,9 +30,10 @@
     <div>
     <h4>Sports:</h4>
     <div class="gym__list">
-        @foreach (var sport in Model.Sports)
+        @foreach (var sport in Model.Sports!)
         {
-            <p class="gym__item">@sport.name</p>
+            <p class="gym__item">@sport.Sport!.name</p>
+            <p class="gym__item">@sport.Price</p>
         }
     </div>
 </div>

@@ -5,11 +5,11 @@ namespace WebApplication2.Models
     public class AddGym
     {
         [Required(ErrorMessage = "Enter name")]
-        public string name { get; set; }
+        public string? name { get; set; }
         [Required(ErrorMessage = "Enter description")]
-        public string description { get; set; }
+        public string? description { get; set; }
         [Required(ErrorMessage = "Enter adress")]
-        public string adress { get; set; }
+        public string? adress { get; set; }
         [Required(ErrorMessage = "Choose city")]
         public int city_id { get; set; }
         [Required]

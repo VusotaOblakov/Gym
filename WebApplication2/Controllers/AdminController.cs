@@ -190,7 +190,7 @@ namespace WebApplication2.Controllers
                 {
                     Id = user.Id,
                     Name = user.UserName,
-                    Role = roleName
+                    Role = roleName!
                 });
             }
             return View(model);
@@ -210,7 +210,7 @@ namespace WebApplication2.Controllers
             {
                 Id = user.Id,
                 Name = user.UserName,
-                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault(),
+                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()!,
                 LockoutEnd = user.LockoutEnd
             };
 

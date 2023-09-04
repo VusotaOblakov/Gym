@@ -16,7 +16,7 @@
 
 
     <div class="gyms__owneds">
-        @foreach(var gym in Model)
+        @foreach(var gym in Model!)
         {
         <div class="gym__flex__own">
             <div>
@@ -32,6 +32,7 @@
                 <a class="btn btn-warning" asp-controller="Gym" asp-action="EditGym" asp-route-id="@gym.id">Edit</a> 
                 <a class="btn btn-danger" asp-controller="Gym" asp-action="DeleteGym" asp-route-id="@gym.id">Delete</a>
                 <a class="btn btn-primary" asp-controller="Gym" asp-action="GymDetails" asp-route-id="@gym.id">View</a>
+                <a class="btn btn-info" asp-controller="Gym" asp-action="GymEditPrice" asp-route-id="@gym.id">Price</a>
             </p>
         </div>    
         }

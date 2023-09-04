@@ -5,11 +5,11 @@ namespace WebApplication2.Models
     public class LoginModel
     {
         [Required]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [Display(Name = "Remember me")]
         public bool RememberMe { get; set; }

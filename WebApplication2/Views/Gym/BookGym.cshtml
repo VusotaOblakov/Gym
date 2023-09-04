@@ -9,7 +9,7 @@
 {
     <div class="alert alert-success">@TempData["GoodMessage"]</div>
 }
-<h1>Book Gym: @Model.GymName</h1>
+<h1>Book Gym: @Model!.GymName</h1>
 
 <p>Select a date:</p>
 <form asp-controller="Gym" asp-action="BookGym" method="get">
@@ -36,6 +36,7 @@
                     <div class="cart__text">
                             <input class="form-check-input" type="radio" name="selectedSlot" value="@($"{slot.BookingHour}_{sport.SportId}")">
                             <p>@sport.SportName</p>
+                            <p>@sport.SportPrice</p>
                     </div>
 
                 }

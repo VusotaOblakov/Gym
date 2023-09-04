@@ -6,7 +6,7 @@
 }
 
     <div>
-        @foreach(var order in Model)
+        @foreach(var order in Model!)
         {
        <div class="order__container">
             <p><span class="text__span">ID:</span>  @order.Id</p>
@@ -14,6 +14,7 @@
             <p><span class="text__span">DATE:</span>  @order.BookingDate.ToString("yyyy-MM-dd")</p>
             <p><span class="text__span">HOURS:</span>  @order.BookingHour:00 - @(order.BookingHour + 1):00</p>
             <p><span class="text__span">ORDERDATE:</span>  @order.OrderDate.ToString("yyyy-MM-dd H:mm")</p>
+            <p><span class="text__span">PRICE:</span>  @order.OrderPrice</p>
         </div>    
         }
     </div>

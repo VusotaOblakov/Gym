@@ -3,7 +3,7 @@
     public class GymAccessoryView
     {
         public int AccessoryId { get; set; }
-        public string AccessoryName { get; set; }
+        public string? AccessoryName { get; set; }
         public bool IsSelected { get; set; }  = false;
     }
 }
