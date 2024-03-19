@@ -14,7 +14,7 @@
 
 
 <form asp-controller="Admin" asp-action="Report" method="get">
-    <label class="control-label "></label>
+    <label class="control-label">City:</label>
     <select name="cityId" class="form-control ignoreForPdf">
         <option value="">-- Select a city --</option>
         @foreach (var city in ViewBag.Cities)
@@ -23,16 +23,29 @@
         }
     </select>
 
-
-
-
-    <div class="form-group ignoreForPdf">
+    <div class="form-group ignoreForPdf m-1">
+        <label for="idsport">Select sport:</label>
+        <select name="idsport" class="form-control" multiple>
+            @foreach (Sport sport in ViewBag.Sport)
+            {
+                <option value="@sport.id">@sport.name</option>
+            }
+        </select>
         <label for="start-date">First date:</label>
         <input type="date" name="selectedDate" value="@DateTime.Today"/>
         <label for="end-date">Last Date:</label>
         <input type="date" name="endDate" value="@DateTime.Today"/>
-        <button type="submit" class="btn btn-primary">Search</button>
+        <label for="minPrice">Min price:</label>
+        <input type="number" name="minPrice" value="0" />
+        <label for="maxPrice">Max price:</label>
+        <input type="number" name="maxPrice" value="1000" />
     </div>
+    <div class="ignoreForPdf m-1">
+        <label for="gymName">By gym name:</label>
+        <input type="text" name="gymName" class="form-control mr-1" />
+        <button type="submit" class="btn btn-primary ml-1">Search</button>
+    </div>
+
 </form>
 
 <table  id ="tblOrders "class="table text-light">
@@ -66,10 +79,9 @@
         orderprice += order.OrderPrice;
     }
     <tr>
-    <th>Number All Gyms: @Model.Count</th>
-    <th> All Price: @orderprice</th>
+        <th>Number All Gyms: @Model.Count</th>
+        <th> All Price: @orderprice</th>
     </tr>
-
 </table>
 
 

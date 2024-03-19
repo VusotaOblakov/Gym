@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApplication2.Data;
 
 namespace WebApplication2.Controllers
@@ -14,8 +15,8 @@ namespace WebApplication2.Controllers
 
 
         //Вивід всіх областей
-        public  IActionResult Index() {
-            var regions =  context.Region.ToList();
+        public async Task<IActionResult> Index() {
+            var regions = await context.Region.ToListAsync();
             return View(regions);
         }
 

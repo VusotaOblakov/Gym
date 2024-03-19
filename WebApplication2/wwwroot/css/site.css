@@ -254,3 +254,21 @@ body {
 .list-group-item {
     border-color: #dee2e6;
 }
+
+.fixed-size-container {
+    width: 424px;
+    height: 424px;
+    overflow: hidden;
+    position: relative;
+}
+
+.fixed-size-container img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

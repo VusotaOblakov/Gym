@@ -28,10 +28,10 @@ namespace WebApplication2.Controllers
             return View();
         }
        //Редагування Принадлежностей(СRUD)
-        public IActionResult EditAccessory()
+        public async Task<IActionResult> EditAccessory()
         {
 
-            var  accessories = context.Accessory.ToList();
+            var  accessories = await context.Accessory.ToListAsync();
             var model = new AccessoryView
             {
                 Accessories = accessories,
@@ -40,10 +40,10 @@ namespace WebApplication2.Controllers
             return View(model);
         }
         //Редагування Спорту(СRUD)
-        public IActionResult EditSport()
+        public async Task<IActionResult> EditSport()
         {
 
-            var sports = context.Sport.ToList();
+            var sports = await context.Sport.ToListAsync();
             var model = new SportView
             {
                 Sports = sports,
@@ -66,16 +66,16 @@ namespace WebApplication2.Controllers
         }
         //Видалення  спорту
         [HttpPost]
-        public IActionResult DeleteSport(int sportId)
+        public async Task<IActionResult> DeleteSport(int sportId)
         {
-            var sportToDelete = context.Sport.Find(sportId);
+            var sportToDelete = await context.Sport.FindAsync(sportId);
             if (sportToDelete == null)
             {
                 return NotFound();
             }
 
             context.Sport.Remove(sportToDelete);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             return RedirectToAction("EditSport");
         }
@@ -93,28 +93,28 @@ namespace WebApplication2.Controllers
                 return RedirectToAction("EditAccessory");
             }
             await context.Accessory.AddAsync(accessory);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return RedirectToAction("EditAccessory");
         }
         //Видалення принадлежності
         [HttpPost]
-        public IActionResult DeleteAccessory(int accessoryId)
+        public async Task<IActionResult> DeleteAccessory(int accessoryId)
         {
-            var accessoryToDelete = context.Accessory.Find(accessoryId);
+            var accessoryToDelete = await context.Accessory.FindAsync(accessoryId);
             if (accessoryToDelete == null)
             {
                 return NotFound();
             }
 
             context.Accessory.Remove(accessoryToDelete);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             return RedirectToAction("EditAccessory");
         }
         //Редагування Ролей
-        public IActionResult EditRoles()
+        public async Task<IActionResult> EditRoles()
         {
-            var roles = _roleManager.Roles.ToList();
+            var roles = await _roleManager.Roles.ToListAsync();
             var model = new EditRolesViewModel
             {
                 Roles = roles
@@ -178,9 +178,9 @@ namespace WebApplication2.Controllers
             });
         }
         //Список всіх користувачів
-        public IActionResult AllUsers()
+        public async Task<IActionResult> AllUsers()
         {
-            var users = _userManager.Users.ToList();
+            var users = await _userManager.Users.ToListAsync();
             var model = new List<UserRoleViewModel>();
             foreach (var user in users)
             {
@@ -214,7 +214,7 @@ namespace WebApplication2.Controllers
                 LockoutEnd = user.LockoutEnd
             };
 
-            ViewBag.Roles = _roleManager.Roles.Select(r => new SelectListItem { Value = r.Name, Text = r.Name }).ToList();
+            ViewBag.Roles = await _roleManager.Roles.Select(r => new SelectListItem { Value = r.Name, Text = r.Name }).ToListAsync();
 
             return View(model);
         }
@@ -295,16 +295,11 @@ namespace WebApplication2.Controllers
             return RedirectToAction("AllUsers");
         }
         [HttpGet]
-        public async Task<IActionResult> Report(DateTime selectedDate, DateTime endDate, int cityId)
+        public async Task<IActionResult> Report(DateTime selectedDate, DateTime endDate, int cityId, List<int> idsport, decimal? minPrice, decimal? maxPrice, string gymName)
         {
             ViewBag.Cities = await context.City.Select(c => new SelectListItem { Value = c.id.ToString(), Text = c.name }).ToListAsync();
-
-            var bookingOrders = from bo in context.BookingOrders
-                                join g in context.Gym on bo.GymId equals g.id
-                                where g.city_id == cityId
-                                select bo;
-            bookingOrders.ToList();
-            List<BookingOrder> bookingOrdersList = bookingOrders.ToList();
+            ViewBag.Accessory = await context.Accessory.ToListAsync();
+            ViewBag.Sport = await context.Sport.ToListAsync();
 
             if (selectedDate == default)
             {
@@ -312,29 +307,42 @@ namespace WebApplication2.Controllers
                 endDate = DateTime.MaxValue;
             }
 
-            //
-
             if (cityId > 0)
             {
-                var orders = from bo in context.BookingOrders
-                             join g in context.Gym on bo.GymId equals g.id
-                             where bo.BookingDate >= selectedDate && bo.BookingDate <= endDate && g.city_id == cityId
-                             select bo;
-                orders.ToList();
-                List<BookingOrder> ordersList = orders.ToList();
-                var cityname = context.City.Find(cityId)?.name;
-                
-                TempData["Message"] =$"Choosen city {cityname} from {selectedDate.ToString("dd/MM/yyyy")} to {endDate.ToString("dd/MM/yyyy")}";
-                return View(ordersList);
+                var cityname = (await context.City.FindAsync(cityId))?.name;
+                TempData["Message"] = $"Choosen city {cityname} from {selectedDate.ToString("dd/MM/yyyy")} to {endDate.ToString("dd/MM/yyyy")}";
             }
             else
             {
                 TempData["Message"] = $"Choosen orders from {selectedDate.ToString("dd/MM/yyyy")} to {endDate.ToString("dd/MM/yyyy")}";
-                var orders = context.BookingOrders
-                   .Where(row => row.BookingDate >= selectedDate && row.BookingDate <= endDate).ToList();
-                return View(orders);
             }
-        }
 
+            var bookingsQuery = context.BookingOrders
+                .Where(bo => bo.BookingDate >= selectedDate && bo.BookingDate <= endDate)
+                .Where(bo => cityId == 0 || context.Gym.Any(g => g.city_id == cityId && g.id == bo.GymId))
+                .Where(bo => !idsport.Any() || idsport.Contains(bo.BookedSportid));
+
+            if (minPrice.HasValue)
+            {
+                bookingsQuery = bookingsQuery.Where(bo => context.Gym.Any(g => g.id == bo.GymId && g.price >= minPrice.Value));
+                TempData["Message"] += $". Minimal price - {minPrice}";
+            }
+
+            if (maxPrice.HasValue)
+            {
+                bookingsQuery = bookingsQuery.Where(bo => context.Gym.Any(g => g.id == bo.GymId && g.price <= maxPrice.Value));
+                TempData["Message"] += $". Maximal price - {maxPrice}";
+            }
+
+            if (!string.IsNullOrWhiteSpace(gymName))
+            {
+                var gymNameLower = gymName.ToLower();
+                bookingsQuery = bookingsQuery.Where(bo => context.Gym.Any(g => g.id == bo.GymId && g.name.ToLower().Contains(gymNameLower)));
+                TempData["Message"] += $". With name {gymName}";
+            }
+
+            var bookings = await bookingsQuery.ToListAsync();
+            return View(bookings);
+        }
     }
 }

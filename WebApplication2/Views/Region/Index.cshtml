@@ -55,16 +55,23 @@ function loadGyms() {
 
             $.each(result, function (i, gym) {
       var gymCard = `
-        <div class="card">
+        <div class="card"">
           <div class="card-header">
             <h4>${gym.name}</h4>
           </div>
-          <div class="card-body">
+          <div class="card-body"> 
+          <div class="d-flex justify-content-between">
+          <div class="m-1">
             <p class="card-text"><strong>Description:</strong> ${gym.description}</p>
             <p class="card-text"><strong>Address:</strong> ${gym.adress}</p>
             <p class="card-text"><strong>Worktime:</strong> ${gym.startwork}:00 - ${gym.endwork}:00</p>
             <p class="card-text"><strong>Price:</strong> ${Intl.NumberFormat('uk-UA', { style: 'currency', currency: 'UAH' }).format(gym.price)}</p>
             <a href="/Gym/GymDetails/${gym.id}" class="btn btn-primary">View Gym</a>
+          </div>
+          <div class="m-1">
+            <img src="${gym.imagePath}" width="80px" height="80px">
+          </div>
+          </div>
           </div>
         </div>
       `;

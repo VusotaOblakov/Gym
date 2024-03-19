@@ -1,6 +1,5 @@
 ﻿@model WebApplication2.Models.BookGymViewModel
 
-
 @if(TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger ">@TempData["ErrorMessage"]</div>
@@ -28,7 +27,7 @@
     {
         if (slot.AvailableSports.Count > 0)
         {
-          
+            
             <div class="form-check ">
                 <p class="form-check-label">@slot.BookingHour:00 - @(slot.BookingHour + 1):00</p>
                 @foreach (var sport in slot.AvailableSports)

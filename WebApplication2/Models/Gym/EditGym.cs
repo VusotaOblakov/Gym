@@ -6,6 +6,4 @@
         public List<GymAccessoryView>? Accessories { get; set; }
         public List<GymSportView>? Sports { get; set; }
     }
-
-
 }

@@ -7,6 +7,7 @@ namespace WebApplication2.Models
         [Required(ErrorMessage = "Enter name")]
         public string? name { get; set; }
         [Required(ErrorMessage = "Enter description")]
+        public string? mapLocate { get; set; }
         public string? description { get; set; }
         [Required(ErrorMessage = "Enter adress")]
         public string? adress { get; set; }
@@ -23,6 +24,7 @@ namespace WebApplication2.Models
         public decimal price { get; set; }
         public List<Accessory> Accessories { get; set; } = new List<Accessory>();
         public List<Sport> Sports { get; set; } = new List<Sport>();
+
     }
 
 

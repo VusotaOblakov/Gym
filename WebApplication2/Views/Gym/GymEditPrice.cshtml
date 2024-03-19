@@ -1,21 +1,20 @@
-﻿@if(TempData["GoodMessage"] != null)
+﻿@if (TempData["GoodMessage"] != null)
 {
     <div class="alert alert-success">@TempData["GoodMessage"]</div>
 }
 <h1>Sport Prices</h1>
 <form asp-controller="Gym" asp-action="GymEditPrice" method="post">
-@foreach (var sportWithPrice in ViewBag.SportsWithPrice)
-{
-     <div>
-        <p>@sportWithPrice.Sport.name</p>
-        <input type="hidden" name="sportId" value="@sportWithPrice.Sport.id" />
-        <input type="number" name="price" value="@sportWithPrice.Price" />
+    @foreach (var sportWithPrice in ViewBag.SportsWithPrice)
+    {
+        <div>
+            <p>@sportWithPrice.Sport.name</p>
+            <input type="hidden" name="sportId" value="@sportWithPrice.Sport.id" />
+            <input type="number" name="price" value="@sportWithPrice.Price" />
+        </div>
+    }
+
+    <div>
+        <button type="submit" class="btn btn-primary">Edit Price</button>
     </div>
-}
-
-<div>
-    <button type="submit" class="btn btn-primary">Edit Price</button>
-</div>
-<input type="hidden" name="gymId" value="@ViewBag.GymId" />
+    <input type="hidden" name="gymId" value="@ViewBag.GymId" />
 </form>
-

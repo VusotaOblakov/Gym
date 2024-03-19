@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using WebApplication2.Data;
 
@@ -14,9 +15,9 @@ namespace WebApplication2.Controllers
         }
 
         //Отримання міст по області в JSON
-        public IActionResult GetCitiesByRegion(int region_id)
+        public async Task<IActionResult> GetCitiesByRegion(int region_id)
         {
-            var cities = context.City.Where(c => c.region_id == region_id).ToList();
+            var cities = await context.City.Where(c => c.region_id == region_id).ToListAsync();
             return Json(cities);
         }
 

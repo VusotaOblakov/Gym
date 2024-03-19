@@ -7,38 +7,51 @@
 }
 <h2>Edit Gym</h2>
 
-<form asp-action="EditGym" method="post" onsubmit="worktime()">
-    <div asp-validation-summary="All" class="text-danger"></div>
+<form asp-action="EditGym" method="post" enctype="multipart/form-data" onsubmit="worktime()">
     <input type="hidden" asp-for="gym.id" />
     <input type="hidden" asp-for="gym.owner_id" />
     <div class="form-group">
         <label asp-for="gym.name"></label>
         <input type="text" asp-for="gym.name" class="form-control" />
+        <span asp-validation-for="gym.name" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="photo">Photo:</label><br />
+        <input type="file" id="photo" name="photo" accept="image/*" class="form-control-file">
+        <input type="text" asp-for="gym.imagePath" hidden/>
     </div>
 
     <div class="form-group">
         <label asp-for="gym.adress"></label>
-        <input type="text" asp-for="gym.adress" class="form-control" />
+        <input type="text" asp-for="gym.adress" id="addressInput" class="form-control" />
+        <div id="map" style="height: 400px; width: 100%"></div>
+        <input type="hidden" id="mapLocation" asp-for="gym.mapLocate"/>
+        <span asp-validation-for="gym.adress" class="form-text text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="gym.description"></label>
         <textarea asp-for="gym.description" class="form-control"></textarea>
+        <span asp-validation-for="gym.description" class="form-text text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="gym.price"></label>
         <input type="number" asp-for="gym.price" class="form-control" />
+        <span asp-validation-for="gym.price" class="form-text text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="gym.startwork"></label>
         <input type="number" asp-for="gym.startwork" class="form-control" min="1" max="24" />
+        <span asp-validation-for="gym.startwork" class="form-text text-danger"></span>
     </div>
 
-<div class="form-group">
-  <label asp-for="gym.endwork"></label>
-  <input type="number" asp-for="gym.endwork" class="form-control" min="1" max="24" />
-</div>
+    <div class="form-group">
+        <label asp-for="gym.endwork"></label>
+        <input type="number" asp-for="gym.endwork" class="form-control" min="1" max="24" />
+        <span asp-validation-for="gym.endwork" class="form-text text-danger"></span>
+    </div>
 
     <div class="form-group">
         <label asp-for="Accessories">Accessories:</label>
@@ -68,3 +81,92 @@
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
+
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-GTwOIA_oXryqwga78Vk0TbX_7mPjFk0&libraries=places&callback=initMap" async defer></script>
+    <script>
+        var map;
+        var markers = [];
+
+        function initMap() {
+            var gymLocation = new google.maps.LatLng(@Model.gym.mapLocate);
+            
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: gymLocation,
+                zoom: 12,
+            });
+
+            var baseMarker = new google.maps.Marker({
+                title: '@Model.gym.name',
+                position: gymLocation,
+                map: map
+            })
+            markers.push(baseMarker);
+
+            var searchBox = new google.maps.places.SearchBox(document.getElementById('addressInput'));
+
+            searchBox.addListener('places_changed', function () {
+                var places = searchBox.getPlaces();
+                if (places.length == 0) {
+                    return;
+                }
+
+                clearMarkers();
+
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function (place) {
+                    if (!place.geometry) {
+                        return;
+                    }
+                    var location = place.geometry.location;
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: location
+                    });
+                    $('#mapLocation').val(location.lat() + ',' + location.lng());
+                    markers.push(marker);
+
+                    if (place.geometry.viewport) {
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                var location = event.latLng;
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'location': location }, function (results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            document.getElementById('addressInput').value = results[0].formatted_address;
+                        } else {
+                            // можешь тут поставить что то свое
+                            document.getElementById('addressInput').value = 'No results!';
+                        }
+                    }
+                    else {
+                        console.log("Status: " + status)
+                    }
+                });
+                $('#mapLocation').val(location.lat() + ',' + location.lng());
+                map.setCenter(location);
+                clearMarkers();
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map
+                });
+                markers.push(marker);
+            });
+        }
+
+        function clearMarkers() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
+    </script>
+}

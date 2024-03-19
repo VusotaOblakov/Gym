@@ -8,45 +8,62 @@
 }
 
 
-<form asp-controller="Gym" asp-action="AddGym" method="post" onsubmit="worktime()">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <label asp-for="city_id" class="control-label"></label>
-    <select asp-for="city_id" class="form-control">
-        <option value="">-- Select a city --</option>
-        @foreach (var city in ViewBag.Cities)
-        {
-            <option value="@city.Value">@city.Text</option>
-        }
-    </select>
+<form asp-controller="Gym" asp-action="AddGym" method="post" enctype="multipart/form-data" onsubmit="worktime()">
+    <div class="form-group">
+        <label asp-for="city_id" class="control-label">City:</label>
+            <select asp-for="city_id" class="form-control">
+            <option value="">-- Select a city --</option>
+            @foreach (var city in ViewBag.Cities)
+            {
+                <option value="@city.Value">@city.Text</option>
+            }
+        </select>
+        <span asp-validation-for="city_id" class="form-text text-danger"></span>
+    </div>
 
     <div class="form-group">
-        <label asp-for="name"></label>
+        <label asp-for="name">Name:</label>
         <input type="text" asp-for="name" class="form-control" />
+        <span asp-validation-for="name" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="photo">Photo:</label><br />
+        <input type="file" id="photo" name="photo" accept="image/*" class="form-control-file">
     </div>
 
     <div class="form-group">
         <label asp-for="adress"></label>
-        <input type="text" asp-for="adress" class="form-control" />
+        <input type="text" asp-for="adress" id="addressInput" class="form-control" />
+        <div id="map" style="height: 400px; width: 100%"></div>
+        <input type="hidden" id="mapLocation" asp-for="mapLocate" value="50.4500336,30.5241361"/>
+        <span asp-validation-for="adress" class="form-text text-danger"></span>
     </div>
+
 
     <div class="form-group">
         <label asp-for="description"></label>
         <textarea asp-for="description" class="form-control"></textarea>
+        <span asp-validation-for="description" class="form-text text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="price"></label>
         <input type="number" asp-for="price" class="form-control"/>
+        <span asp-validation-for="price" class="form-text text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="startwork"></label>
         <input type="number" asp-for="startwork" class="form-control"  />
+        <span asp-validation-for="startwork" class="form-text text-danger"></span>
     </div>
 
-<div class="form-group">
-  <label asp-for="endwork"></label>
-  <input type="number" asp-for="endwork" class="form-control"  />
-</div>
+    <div class="form-group">
+        <label asp-for="endwork"></label>
+        <input type="number" asp-for="endwork" class="form-control"  />
+        <span asp-validation-for="endwork" class="form-text text-danger"></span>
+    </div>
 
     <div class="form-group">
         <label>Accessories:</label>
@@ -75,4 +92,83 @@
     <button type="submit" class="btn btn-primary btn-lg btn-block">Add</button>
 </form>
 
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-GTwOIA_oXryqwga78Vk0TbX_7mPjFk0&libraries=places&callback=initMap" async defer></script>
+    <script>
+        var map;
+        var markers = [];
 
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                // значение по умолчанию (киев) если будешь его менять то поменяй и в input значение value
+                center: { lat: 50.4500336, lng: 30.5241361 },
+                zoom: 12,
+            });
+
+            var searchBox = new google.maps.places.SearchBox(document.getElementById('addressInput'));
+
+            searchBox.addListener('places_changed', function () {
+                var places = searchBox.getPlaces();
+                if (places.length == 0) {
+                    return;
+                }
+
+                clearMarkers();
+
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function (place) {
+                    if (!place.geometry) {
+                        return;
+                    }
+                    var location = place.geometry.location;
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: location
+                    });
+                    $('#mapLocation').val(location.lat() + ',' + location.lng());
+                    markers.push(marker);
+
+                    if (place.geometry.viewport) {
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                var location = event.latLng;
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'location': location }, function (results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            document.getElementById('addressInput').value = results[0].formatted_address;
+                        } else {
+                            // можешь тут поставить что то свое (хотя сколько бы я ни кликал гугл все равно хоть что то но возвращает)
+                            document.getElementById('addressInput').value = 'No results!';
+                        }
+                    }
+                    else {
+                        console.log("Status: " + status)
+                    }
+                });
+                $('#mapLocation').val(location.lat() + ',' + location.lng());
+                map.setCenter(location);
+                clearMarkers();
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map
+                });
+                markers.push(marker);
+            });
+        }
+
+        function clearMarkers() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
+    </script>
+}

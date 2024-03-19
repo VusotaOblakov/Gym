@@ -1,44 +1,76 @@
 ﻿@model WebApplication2.Models.GymView
 <h1>Gym Details</h1>
 <div class="detail__container">
-<div>
-    <h4>Gym Name:</h4>
-    <p>@Model!.Name</p>
+    <div class="d-flex justify-content-between">
+        <div class="m-3">
+            <h4>Gym photo:</h4>
+            <div class="fixed-size-container">
+                <img src="@Model.ImagePath"/>
+            </div>
+        </div>
+        <div class="m-3">
+            <div>
+                <h4>Gym Name:</h4>
+                <p>@Model!.Name</p>
+            </div>
+            <div>
+                <h4>Gym Description:</h4>
+                <p>@Model.Description</p>
+            </div>
+            <div>
+                <h4>Gym Address:</h4>
+                <p>@Model.Address</p>
+            </div>
+            <br />
+            <div>
+                <h4>Gym Price:</h4>
+                <p>@string.Format(new System.Globalization.CultureInfo("uk-UA"), "{0:C}", Model.Price)</p>
+            </div>
+            <div>
+                <h4>Accessories:</h4>
+                <div class="gym__list">
+                    @foreach (var accessory in Model.Accessories!)
+                    {
+                        <p class="gym__item">@accessory.name</p>
+                    }
+                </div>
+                <div>
+                    <h4>Sports:</h4>
+                    <div class="gym__list">
+                        @foreach (var sport in Model.Sports!)
+                        {
+                            <p class="gym__item">@sport.Sport!.name</p>
+                            <p class="gym__item">@sport.Price</p>
+                        }
+                    </div>
+                </div>
+                <div>
+                    <a asp-controller="Gym" asp-action="BookGym" asp-route-gymId="@Model.Id" class="btn btn-primary">Order a gym</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="map" style="height: 400px; width: 100%"></div>
 </div>
 
-<div>
-    <h4>Gym Description:</h4>
-    <p>@Model.Description</p>
-</div>
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-GTwOIA_oXryqwga78Vk0TbX_7mPjFk0&callback=initMap" async defer></script>
+    <script>
+        function initMap() {
+            var gymLocation = new google.maps.LatLng(@Model.MapLocate);
 
-<div>
-    <h4>Gym Address:</h4>
-    <p>@Model.Address</p>
-</div>
-<div>
-    <h4>Gym Price:</h4>
-    <p>@string.Format(new System.Globalization.CultureInfo("uk-UA"), "{0:C}", Model.Price)</p>
-</div>
-<div>
-    <h4>Accessories:</h4>
-    <div class="gym__list">
-        @foreach (var accessory in Model.Accessories!)
-        {
-            <p class="gym__item">@accessory.name</p>
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: gymLocation,
+                scrollwheel: false,
+                draggable: true,
+                zoom: 12
+            });
+
+            var marker = new google.maps.Marker({
+                position: gymLocation,
+                title: '@Model.Name',
+                map: map
+            });
         }
-    </div>
-    <div>
-    <h4>Sports:</h4>
-    <div class="gym__list">
-        @foreach (var sport in Model.Sports!)
-        {
-            <p class="gym__item">@sport.Sport!.name</p>
-            <p class="gym__item">@sport.Price</p>
-        }
-    </div>
-</div>
-<div>
-    <a asp-controller="Gym" asp-action="BookGym" asp-route-gymId="@Model.Id" class="btn btn-primary">Order a gym</a>
-</div>
-</div>
-</div>
+    </script>
+}
