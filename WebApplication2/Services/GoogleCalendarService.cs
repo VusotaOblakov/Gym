@@ -16,7 +16,7 @@ public class GoogleCalendarService
 
         using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
         {
-            string credPath = "token.json";
+            string credPath = "GoogleTokensOAuth";
             credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                 GoogleClientSecrets.FromStream(stream).Secrets,
                 Scopes,

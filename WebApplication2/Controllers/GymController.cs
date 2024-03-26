@@ -486,7 +486,7 @@ namespace WebApplication2.Controllers
         //Бронювання залу на конкретну дату,час,спорт
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> BookGym(int GymId, DateTime bookingDate, string selectedSlot)
+        public async Task<IActionResult> BookGym(int GymId, DateTime bookingDate, string selectedSlot, bool addToCalendar)
         {
             if(selectedSlot == null)
             {
@@ -515,15 +515,17 @@ namespace WebApplication2.Controllers
             await context.BookingOrders.AddAsync(bookingOrder);
             await context.SaveChangesAsync();
 
-            await _gCalendar.AddEventToGoogleCalendarAsync(bookingOrder, 
-                await context.Gym
-                    .Where(g => g.id == GymId)
-                    .FirstAsync(),
-                await context.Sport
-                    .Where(s => s.id == selectedSportId)
-                    .Select(s => s.name)
-                    .FirstAsync()
-                );
+            if (addToCalendar) {
+                await _gCalendar.AddEventToGoogleCalendarAsync(bookingOrder,
+                    await context.Gym
+                        .Where(g => g.id == GymId)
+                        .FirstAsync(),
+                    await context.Sport
+                        .Where(s => s.id == selectedSportId)
+                        .Select(s => s.name)
+                        .FirstAsync()
+                    );
+            }
 
             TempData["GoodMessage"] = $"Successfully booked!Booking order id is {bookingOrder.Id}";
             return RedirectToAction("BookGym", new { gymId = GymId });

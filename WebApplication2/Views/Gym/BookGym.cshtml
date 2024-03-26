@@ -19,7 +19,7 @@
     </div>
 </form>
 
-<form asp-controller="Gym" asp-action="BookGym" method="post">
+<form asp-controller="Gym" asp-action="BookGym" method="post" id="bookForm">
         <input type="hidden" name="gymId" value="@Model.GymId" />
         <input type="hidden" name="bookingDate" value="@Model.SelectedDate.ToString("yyyy-MM-dd")" />
     <div class="form__carts">
@@ -44,5 +44,47 @@
         }
     }
     </div>
-        <button type="submit" class="btn btn-primary">Book</button>
+    <input  name="addToCalendar" value="false" hidden />
+    <button type="submit" class="btn btn-primary">Book</button>
 </form>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content p-5">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">You want to add event to calendar?</h5>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-around w-100">
+                    <button type="button" class="btn btn-secondary w-50 m-1" id="no">No</button>
+                    <button type="button" class="btn btn-primary w-50 m-1" id="yes">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let selected = false;
+        $(document).ready(function () {
+            $('#yes').click(function () {
+                selected = true;
+                $("input[name='addToCalendar']").val("true");
+                $("#bookForm").submit();
+            });
+            $('#no').click(function () {
+                selected = true;
+                $("input[name='addToCalendar']").val("false");
+                $("#bookForm").submit();
+            })
+
+            $('#bookForm').submit(function (event) {
+                if (selected == false) {
+                    event.preventDefault();
+                    $('#confirmModal').modal('show');
+                }
+            });
+        });
+    </script>
+}
